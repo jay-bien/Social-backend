@@ -17,7 +17,7 @@ const typeDefs = gql`
         ogType: String,
         ogUrl: String,
         ogDescription: String,
-        ogImage: String,
+        ogImage: ogImage,
         requestUrl: String,
         success: Boolean
     }
