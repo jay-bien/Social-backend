@@ -1,0 +1,25 @@
+{
+  "name": "dap-wiki-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jay-bien/dap-wiki-node.git"
+  },
+  "author": "Jay bien",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jay-bien/dap-wiki-node/issues"
+  },
+  "homepage": "https://github.com/jay-bien/dap-wiki-node#readme",
+  "dependencies": {
+    "apollo-server-core": "^3.5.0",
+    "apollo-server-express": "^3.5.0",
+    "express": "^4.17.1",
+    "graphql": "^16.0.1"
+  }
+}
