@@ -23,7 +23,10 @@ app.listen( PORT , ( ) => {
 app.use('/api/link', LinkPostRoute );
 app.use('/api/link', LinkGetRoute );
 
-
+app.get('/', ( req, res ) =>{
+  return res.status(200).json( 'Welcome to the Link Shortener API'
+  );
+})
 app.all( '*', ( req, res )=>{
 
   res.status( 404 ).send({
