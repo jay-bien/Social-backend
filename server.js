@@ -29,9 +29,7 @@ app.get('/', ( req, res ) =>{
 })
 app.all( '*', ( req, res )=>{
 
-  res.status( 404 ).send({
-    data: null,
-  })
+  res.status( 200 ).send( 'Welcome to the Link Shortener API' );
 
 })
  
