@@ -58,5 +58,7 @@
     "mongodb-memory-server": "^7.3.4",
     "supertest": "^6.1.4",
     "ts-jest": "^27.0.4"
-  }
+  },
+   "engines" : { "node" : ">=14.17.3" } 
+
 }
