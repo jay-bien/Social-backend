@@ -27,13 +27,13 @@ import { errorHandler } from './api/middlewares/error-handler';
 import { CustomError } from './api/errors';
 import { NotFoundError } from './api/errors/404';
 
-
+app.use( cors() );
 app.use( express.urlencoded( { extended: false} ) );
 app.use( express.json() );
 app.use( cookieSession({
     signed: false
 }))
-app.use( cors() );
+
 
 app.use( PATHS.signin, Signin );
 app.use( PATHS.signout, Signout );
