@@ -2,8 +2,6 @@
     "version": 2,
     "name": "dap-wiki-node2",
     "builds": [
-      { "src": "src/app.ts", "use": "@vercel/node" }
-    ],
-    "rewrites": [{ "source": "/src/(.*)", "destination": "/api" }]
-
+      { "src": "src/index.ts", "use": "@vercel/node" }
+    ]
   }
