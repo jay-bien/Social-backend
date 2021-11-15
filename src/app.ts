@@ -43,6 +43,7 @@ app.use( PATHS.tickets, Tickets )
 app.use( PATHS.link, LinkPost )
 
 app.all( '*', ()=>{
+    console.log("404 route");
     throw new NotFoundError();
 })
 app.use( errorHandler );
