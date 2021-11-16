@@ -48,8 +48,9 @@ const commentSchema = new mongoose.Schema({
         required: false,
     },
     link: {
-        type: String,
-        required: false
+        type: ObjectID,
+        required: false,
+        ref: "Link"
     },
 })
 

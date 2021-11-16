@@ -74,9 +74,8 @@ router.get('/', async ( req: Request, res: Response ) => {
 
 
     try{
-        const allComments = await Comment.find({});
-        const allLinks = await Link.find({});
-        return res.status(200).send({ comments: allComments, links: allLinks });
+        const allComments = await Comment.find({}).populate('link');
+        return res.status(200).send({ comments: allComments});
 
     } catch( e ){
         console.log({ e });
