@@ -14,10 +14,10 @@ router.post('/',
             .not()
             .isEmpty()
             .withMessage("Title cannot be empty"),
-        body('price')
+        body('content')
             .not()
             .isEmpty()
-            .withMessage("Price cannot be empty"),
+            .withMessage("Content cannot be empty"),
         body('price')
             .isFloat({ gt: 0})
             .withMessage("Price must be greater than 0.")
