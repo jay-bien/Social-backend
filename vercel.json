@@ -2,10 +2,10 @@
     "version": 2,
     "name": "dap-wiki-node2",
     "builds": [
-      { "src": "src/index.ts", "use": "@vercel/node" }
+      { "src": "./src/index.ts", "use": "@vercel/node" }
     ],
     "routes":[{
-      "src":"/src/(.*)",
-      "dest": "/src/index.js"
+      "src":"/(.*)",
+      "dest": "/"
     }]
   }
