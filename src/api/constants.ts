@@ -6,7 +6,8 @@ const   PATHS = {
     signout: "/signout",
     currentUser: "/currentUser",
     tickets: "/tickets",
-    link: "/link"
+    link: "/link",
+    posts: "/post"
 } 
 
 export {

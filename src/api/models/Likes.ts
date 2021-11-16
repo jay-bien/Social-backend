@@ -15,18 +15,18 @@ interface LikeModel extends mongoose.Model< any >{
     build( attrs: LikeAttrs ): LikeDoc
 }
 
-const commentSchema = new mongoose.Schema({
+const likeSchema = new mongoose.Schema({
 
 })
 
-commentSchema.statics.build = ( attrs: LikeAttrs ) => {
-    return new comment( attrs );
+likeSchema.statics.build = ( attrs: LikeAttrs ) => {
+    return new Like( attrs );
 }
 
-const comment = mongoose.model< LikeDoc, LikeModel >('comment', commentSchema)
+const Like = mongoose.model< LikeDoc, LikeModel >('like', likeSchema)
 
 
 
 
 
-export { comment }
+export { Like }

@@ -1,31 +1,12 @@
 import express, {Request, Response } from 'express';
 import ogs from 'open-graph-scraper';
-import axios from 'axios';
 import { unfurl } from 'unfurl.js';
-import got from 'got';
-
-
-import metascraper from 'metascraper';
-import desc from 'metascraper-description';
-import author from 'metascraper-author';
-import img from 'metascraper-image';
-import title from 'metascraper-title';
-import logo from 'metascraper-logo';
-import video from 'metascraper-video';
 
 
 
 
 const router = express.Router();
 
-const scraper = metascraper([
-    title(),
-    author(),
-    desc(),
-    img(),
-    video(),
-    logo(),
-]);
 
 router.post('/', async ( req: Request, res: Response) => {
     console.log(req.body);
@@ -41,6 +22,11 @@ router.post('/', async ( req: Request, res: Response) => {
 
 
       const response = await unfurl( url );
+      
+
+
+
+      console.log({ response });
       return res.status( 200 ).send({
         data: response
       });
@@ -73,27 +59,7 @@ async function getOpenGraph( url: string ): Promise<{}> {
     });
   };
   
-  async function getMetaScraper( targetUrl: string ): Promise<{}>{
-
-   const unf = await unfurl(targetUrl);
-   console.log({unf});
-
-
-    const response = await got( targetUrl );
-    const { body: html, url } = response;
-
-
-
-    const metadata = await scraper({ html, url });
-
-    return new Promise( resolve =>{ });
-
-// do work here 
-// fetch data and then return data 
-
-
-
-  }
+  
   
 
   type ogResponse = {

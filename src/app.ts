@@ -18,7 +18,7 @@ import { Signin,
          Signup,
          CurrentUser,
          LinkPost,
-         Tickets
+         Posts,
         } 
         from './api/routes';
 
@@ -39,7 +39,7 @@ app.use( PATHS.signin, Signin );
 app.use( PATHS.signout, Signout );
 app.use( PATHS.signup, Signup );
 app.use(  PATHS.currentUser , CurrentUser );
-app.use( PATHS.tickets, Tickets )
+app.use( PATHS.posts, Posts )
 app.use( PATHS.link, LinkPost )
 
 app.all( '*', ()=>{
