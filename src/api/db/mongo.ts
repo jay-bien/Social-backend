@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '../errors';
 const dbUrl = process.env.MONGO_URL || "mongodb://localhost/fluance";
-const localMongo = "mongodb://127.0.0.1:27017";
 
 const start = async ( ) => {
 
