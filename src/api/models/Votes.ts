@@ -44,4 +44,4 @@ const Vote = mongoose.model< VoteDoc, VoteModel >('Vote', voteSchema)
 
 
 
-export { Vote}
+export { Vote }
