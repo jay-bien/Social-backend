@@ -18,7 +18,9 @@ interface CommentDoc extends mongoose.Document{
     parentId: string,
     rootId: string,
     createdAt: Date,
-    link: string
+    link: string,
+    likes: number,
+    dislikes: number,
 }
 
 interface CommentModel extends mongoose.Model< any >{
@@ -52,6 +54,14 @@ const commentSchema = new mongoose.Schema({
         required: false,
         ref: "Link"
     },
+    likes: {
+        type: Number,
+        required: true,
+    },
+    dislikes: {
+        type: Number,
+        required: true
+    }
 })
 
 commentSchema.statics.build = ( attrs: CommentAttrs ) => {

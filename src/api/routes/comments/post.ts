@@ -73,17 +73,18 @@ validateRequest,
 // @access 
 router.get('/', async ( req: Request, res: Response ) => {
     try{
-        const allComments = await Comment.find({}).populate('link').populate('like');
+        const allComments = await Comment.find({}).populate('link');
+        allComments.map( async comment => {
+            const allLikes = await Like.find({ post: comment._id });
+            console.log( { allLikes });
+ 
+            comment.likes = allLikes;
+            console.log({ comment})
+        })
         console.log({
             allComments
         });
 
-        allComments.forEach( async comment => {
-           const allLikes = await Like.find({ post: comment._id });
-           console.log( allLikes );
-
-           comment.likes = allLikes;
-        })
         return res.status(200).send({ comments: allComments});
 
     } catch( e ){

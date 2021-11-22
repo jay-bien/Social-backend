@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 
-import { Like } from '../../models';
+import { Like, Comment } from '../../models';
 import { requireAuth, currentUser } from '../../middlewares';
 
 const router = express.Router();
@@ -29,6 +29,12 @@ router.post('/:direction', [
         })
     
         await likeDoc.save();
+        const comment = await Comment.findById(post);
+        const commentLikes = await Like.find({ post: {'$in': post}});
+        console.log({ commentLikes});
+        if( comment ){
+            comment.likes = commentLikes.length;
+        }
         return res.status( 200 ).send( likeDoc );
 
     } catch( e ){
