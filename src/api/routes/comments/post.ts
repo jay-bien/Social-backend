@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { BadRequest } from '../../errors';
 import { RequestValidationError } from '../../errors/request-validation';
 
-import { Comment, Link } from '../../models';
+import { Comment, Link, Like } from '../../models';
 import { unfurl } from 'unfurl.js';
 
 
@@ -46,8 +46,10 @@ validateRequest,
         console.log({ linkDoc });
         
     }
+    
     try{
         const commentDoc = Comment.build( { title, link: linkId, content, author:"", parentId:"", rootId:"" } );
+
         await commentDoc.save();
         console.log({ commentDoc });
         return res.status( 200 ).send({ data: commentDoc });
@@ -70,11 +72,18 @@ validateRequest,
 // @desc 
 // @access 
 router.get('/', async ( req: Request, res: Response ) => {
-
-
-
     try{
-        const allComments = await Comment.find({}).populate('link');
+        const allComments = await Comment.find({}).populate('link').populate('like');
+        console.log({
+            allComments
+        });
+
+        allComments.forEach( async comment => {
+           const allLikes = await Like.find({ post: comment._id });
+           console.log( allLikes );
+
+           comment.likes = allLikes;
+        })
         return res.status(200).send({ comments: allComments});
 
     } catch( e ){
