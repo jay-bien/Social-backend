@@ -32,6 +32,13 @@ interface VoteModel extends mongoose.Model< any >{
 
 const voteSchema = new mongoose.Schema({
 
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+          },
+    }
 })
 
 voteSchema.statics.build = ( attrs: VoteAttrs ) => {

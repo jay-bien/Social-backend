@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema({
     recur_end:{},
     recur_interval:{},
     permissions:{}
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+          },
+    }
 });
 
 userSchema.pre('save', async function( done ){

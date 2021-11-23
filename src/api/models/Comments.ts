@@ -7,7 +7,9 @@ interface CommentAttrs {
     content: string,
     parentId: string,
     rootId: string,
-    link: string
+    link: string,
+    likes: number,
+    dislikes: number,
 }
 
 
@@ -56,11 +58,18 @@ const commentSchema = new mongoose.Schema({
     },
     likes: {
         type: Number,
-        required: true,
+        required: false,
     },
     dislikes: {
         type: Number,
-        required: true
+        required: false
+    }
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+          },
     }
 })
 

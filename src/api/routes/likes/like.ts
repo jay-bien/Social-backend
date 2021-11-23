@@ -2,11 +2,12 @@ import express, { Request, Response } from 'express';
 
 import { Like, Comment } from '../../models';
 import { requireAuth, currentUser } from '../../middlewares';
+import mongoose from 'mongoose'
 
 const router = express.Router();
 
 
-router.post('/:direction', [
+router.post('/:commentId/:direction', [
     currentUser
 ],
     async ( req: Request, res: Response ) => {
@@ -14,28 +15,32 @@ router.post('/:direction', [
 
     const user = req.currentUser;
     console.log( req.body );
-    const post = req.body.post;
-    console.log(post );
+   
     const direction = req.params.direction;
+    const commentId = req.params.commentId;
     console.log({ direction});
-    console.log( typeof post );
+    console.log( typeof commentId);
 
     try{
         
         const likeDoc = Like.build({
-            post: post,
+            post: commentId,
             direction: "up",
             user: "user"
         })
     
         await likeDoc.save();
-        const comment = await Comment.findById(post);
-        const commentLikes = await Like.find({ post: {'$in': post}});
-        console.log({ commentLikes});
+        console.log({ commentId });
+
+        const comment = await Comment.findById( commentId);
+        const commentLikes = await Like.find({ post: {'$in': commentId }});
+        console.log({ comment });
         if( comment ){
             comment.likes = commentLikes.length;
+            console.log( comment );
+            await comment.save();
         }
-        return res.status( 200 ).send( likeDoc );
+        return res.status( 200 ).send( comment );
 
     } catch( e ){
         console.log( e );

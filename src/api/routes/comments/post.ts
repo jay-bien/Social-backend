@@ -44,17 +44,15 @@ validateRequest,
         await linkDoc.save();
         linkId = linkDoc._id;
         console.log({ linkDoc });
-        
     }
     
     try{
-        const commentDoc = Comment.build( { title, link: linkId, content, author:"", parentId:"", rootId:"" } );
+        const commentDoc = Comment.build( { title, link: linkId, content, author:"", parentId:"", rootId:"", likes:0, dislikes: 0 } );
 
         await commentDoc.save();
         console.log({ commentDoc });
         return res.status( 200 ).send({ data: commentDoc });
 
-    
     } catch( e ){
         console.log({ e });
     }
@@ -74,13 +72,7 @@ validateRequest,
 router.get('/', async ( req: Request, res: Response ) => {
     try{
         const allComments = await Comment.find({}).populate('link');
-        allComments.map( async comment => {
-            const allLikes = await Like.find({ post: comment._id });
-            console.log( { allLikes });
- 
-            comment.likes = allLikes;
-            console.log({ comment})
-        })
+
         console.log({
             allComments
         });
