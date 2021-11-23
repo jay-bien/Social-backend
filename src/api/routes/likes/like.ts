@@ -21,31 +21,70 @@ router.post('/:commentId/:direction', [
     console.log({ direction});
     console.log( typeof commentId);
 
-    try{
+
+    if( direction ==="up"){
+
+        try{
         
-        const likeDoc = Like.build({
-            post: commentId,
-            direction: "up",
-            user: "user"
-        })
+            const likeDoc = Like.build({
+                post: commentId,
+                direction: "up",
+                user: "user"
+            })
+        
+            await likeDoc.save();
+            console.log({ commentId });
     
-        await likeDoc.save();
-        console.log({ commentId });
-
-        const comment = await Comment.findById( commentId);
-        const commentLikes = await Like.find({ post: {'$in': commentId }});
-        console.log({ comment });
-        if( comment ){
-            comment.likes = commentLikes.length;
-            console.log( comment );
-            await comment.save();
+            const comment = await Comment.findById( commentId);
+            const commentLikes = await Like.find({ post: {'$in': commentId },
+                    direction:{'$in': direction}});
+                    
+            console.log({ comment });
+            if( comment ){
+                comment.likes = commentLikes.length;
+                console.log( comment );
+                await comment.save();
+            }
+            return res.status( 200 ).send( comment );
+    
+        } catch( e ){
+            console.log( e );
+            return res.status( 400 ).send({});
         }
-        return res.status( 200 ).send( comment );
 
-    } catch( e ){
-        console.log( e );
-        return res.status( 400 ).send({});
+    } else if( direction==="down"){
+
+        try{
+        
+            const likeDoc = Like.build({
+                post: commentId,
+                direction: "down",
+                user: "user"
+            })
+        
+            await likeDoc.save();
+            console.log({ commentId });
+    
+            const comment = await Comment.findById( commentId);
+            const commentDislikes = await Like.find({ post: {'$in': commentId }, direction:{'$in': direction}});
+            console.log({ comment });
+            if( comment ){
+                comment.dislikes = commentDislikes.length;
+                console.log( comment );
+                await comment.save();
+            }
+            return res.status( 200 ).send( comment );
+    
+        } catch( e ){
+            console.log( e );
+            return res.status( 400 ).send({});
+        }
+
+    } else {
+
     }
+
+  
 
 
 
