@@ -19,7 +19,7 @@ import { Signin,
          CurrentUser,
          LinkPost,
          Posts,
-         Likes
+         Votes
         } 
         from './api/routes';
 
@@ -42,7 +42,7 @@ app.use( PATHS.signup, Signup );
 app.use(  PATHS.currentUser , CurrentUser );
 app.use( PATHS.posts, Posts );
 app.use( PATHS.link, LinkPost );
-app.use( PATHS.likes, Likes );
+app.use( PATHS.votes , Votes );
 
 app.all( '*', ()=>{
     console.log("404 route");

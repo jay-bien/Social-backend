@@ -8,7 +8,7 @@ const   PATHS = {
     tickets: "/tickets",
     link: "/link",
     posts: "/post",
-    likes: "/like"
+    votes: "/vote"
 } 
 
 export {
