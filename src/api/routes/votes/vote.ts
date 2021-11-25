@@ -35,7 +35,7 @@ router.post('/:commentId/:direction', [
             await likeDoc.save();
             console.log({ commentId });
     
-            const comment = await Comment.findById( commentId);
+            const comment = await Comment.findById( commentId).populate("link");
             const commentLikes = await Like.find({ post: {'$in': commentId },
                     direction:{'$in': direction}});
                     
@@ -44,8 +44,10 @@ router.post('/:commentId/:direction', [
                 comment.likes = commentLikes.length;
                 console.log( comment );
                 await comment.save();
-            }
-            return res.status( 200 ).send( comment );
+                return res.status( 200 ).send( comment );
+
+            }   
+            return res.status( 200 ).send({});
     
         } catch( e ){
             console.log( e );
