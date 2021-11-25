@@ -39,12 +39,11 @@ router.post('/:commentId/:direction', [
             const commentLikes = await Like.find({ post: {'$in': commentId },
                     direction:{'$in': direction}});
                     
-            console.log({ comment });
             if( comment ){
                 comment.likes = commentLikes.length;
                 console.log( comment );
                 await comment.save();
-                return res.status( 200 ).send( comment );
+                return res.status( 201 ).send( comment );
 
             }   
             return res.status( 200 ).send({});
@@ -74,8 +73,10 @@ router.post('/:commentId/:direction', [
                 comment.dislikes = commentDislikes.length;
                 console.log( comment );
                 await comment.save();
+                return res.status( 201 ).send( comment );
             }
-            return res.status( 200 ).send( comment );
+
+            return res.status( 200 ).send({})
     
         } catch( e ){
             console.log( e );
