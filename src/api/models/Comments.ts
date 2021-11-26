@@ -10,6 +10,8 @@ interface CommentAttrs {
     link: string,
     likes: number,
     dislikes: number,
+    categories: string[],
+    tags: string[]
 }
 
 
@@ -23,6 +25,8 @@ interface CommentDoc extends mongoose.Document{
     link: string,
     likes: number,
     dislikes: number,
+    categories: string[],
+    tags: string[]
 }
 
 interface CommentModel extends mongoose.Model< any >{
@@ -63,6 +67,13 @@ const commentSchema = new mongoose.Schema({
     dislikes: {
         type: Number,
         required: false
+    },
+    categories: {
+        type: Array,
+        required: true
+    }, 
+    tags:{
+        type: Array,
     }
 }, {
     toJSON: {
