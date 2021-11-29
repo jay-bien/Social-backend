@@ -12,7 +12,7 @@ router.post('/', async ( req: Request, res: Response) => {
     console.log(req.body);
     const url = req.body.url;
   
-    if(! url){
+    if(url){
         return res.status( 401 ).send({
             data: null
         });

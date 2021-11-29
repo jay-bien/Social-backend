@@ -32,11 +32,14 @@ validateRequest,
     console.log(req.body);
 
 
-    const { title, link, content } = req.body;
+    const { title, link, content, type, categories, tags } = req.body;
+    const createdAt = Date.now();
+    let linkId = null;
 
+    if( type === "text"){
 
+    } else if( type ==="link"){
 
-    let linkId = '';
     if( link ) {    
         const unfurlResult = await unfurl( link );
         console.log( unfurlResult );
@@ -46,8 +49,27 @@ validateRequest,
         console.log({ linkDoc });
     }
     
+
+    } else if( type === "qa"){
+
+    }
+
+
+
     try{
-        const commentDoc = Comment.build( { title, link: linkId, content, author:"", parentId:"", rootId:"", likes:0, dislikes: 0 } );
+        const commentDoc = Comment.build( { 
+            title,
+             link: linkId, 
+             content, author:"",
+              parentId:"",
+               rootId:"",
+                likes:0,
+                 dislikes: 0,
+                 categories,
+                 tags,
+                 type,
+                 created_at: createdAt,
+        } );
 
         await commentDoc.save();
         console.log({ commentDoc });
@@ -71,7 +93,7 @@ validateRequest,
 // @access 
 router.get('/', async ( req: Request, res: Response ) => {
     try{
-        const allComments = await Comment.find({}).populate('link');
+        const allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
 
         console.log({
             allComments
@@ -85,6 +107,22 @@ router.get('/', async ( req: Request, res: Response ) => {
 
     res.status(200).send({})
     return;
+})
+
+router.delete("/:comment_id", async ( req: Request, res: Response ) => {
+    
+    console.log(" delete this");
+    try{
+        const id = req.params.comment_id;
+        console.log({ id });
+        await Comment.findByIdAndRemove( id );
+
+        return res.status( 200 ).send({})
+    } catch( e ){
+        console.log({ e});
+        return res.status( 500 ).send({e})
+
+    }
 })
 
 export default router;

@@ -7,11 +7,13 @@ interface CommentAttrs {
     content: string,
     parentId: string,
     rootId: string,
-    link: string,
+    link: string | null,
     likes: number,
     dislikes: number,
     categories: string[],
-    tags: string[]
+    tags: string[],
+    type: string,
+    created_at: number
 }
 
 
@@ -22,11 +24,13 @@ interface CommentDoc extends mongoose.Document{
     parentId: string,
     rootId: string,
     createdAt: Date,
-    link: string,
+    link: string | null,
     likes: number,
     dislikes: number,
     categories: string[],
-    tags: string[]
+    tags: string[],
+    type: string,
+    created_at: number
 }
 
 interface CommentModel extends mongoose.Model< any >{
@@ -74,6 +78,14 @@ const commentSchema = new mongoose.Schema({
     }, 
     tags:{
         type: Array,
+    },
+    type:{
+        type: String,
+        required: true
+    },
+    created_at: {
+        type: Number,
+        required: true
     }
 }, {
     toJSON: {
