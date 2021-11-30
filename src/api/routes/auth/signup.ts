@@ -43,18 +43,20 @@ validateRequest,
     try{
 
     const exists = await User.findOne({ email });
-    } catch( e ){
-        console.log( e )
-    }
-
-
-
-
-
     if( exists ){
         console.log("Email is in use");
         throw new BadRequest( 'Email is in use.' )
     }
+    } catch( e ){
+        console.log({ e});
+        throw e;
+    }
+
+
+
+
+
+  
 
     try{
 
