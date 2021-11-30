@@ -26,17 +26,17 @@ router.post('/', [
         .trim()
         .isLength( { min: 6 , max: 20 } )
         .withMessage(' Password must be between 6 and 20 characters.'),
-    body('password2')
-        .trim()
-        .equals('password')
-        .withMessage("Passwords do not match")
 ], 
 validateRequest,
  async ( req: Request, res: Response ) => {
 
 
 
-    const { email, password } = req.body;
+    const { email, password, password2 } = req.body;
+
+    if('' + password.trim() !== '' + password2.trim() ){
+        throw new BadRequest("Passwords do not match")
+    }
     let user = null;
     let exists = false;
 
