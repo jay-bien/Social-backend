@@ -25,24 +25,47 @@ router.post('/', [
     body( 'password' )
         .trim()
         .isLength( { min: 6 , max: 20 } )
-        .withMessage(' Password must be between 6 and 20 characters.')
+        .withMessage(' Password must be between 6 and 20 characters.'),
+    body('password2')
+        .trim()
+        .equals('password')
+        .withMessage("Passwords do not match")
 ], 
 validateRequest,
  async ( req: Request, res: Response ) => {
 
 
-    const { email, password } = req.body;
 
+    const { email, password } = req.body;
+    let user = null;
+    let exists = false;
+
+    try{
 
     const exists = await User.findOne({ email });
-
-    if( exists ){
-        throw new BadRequest( 'Email is in use.' )
-        return res.send({})
+    } catch( e ){
+        console.log( e )
     }
 
-    const user = User.build( { email, password } );
+
+
+
+
+    if( exists ){
+        console.log("Email is in use");
+        throw new BadRequest( 'Email is in use.' )
+    }
+
+    try{
+
+    user = User.build( { email, password } );
     await user.save();
+
+
+    } catch( e ){
+        console.log({ e });
+        return res.status(400).send({});
+    }
 
     
     const uJwt = jwt.sign({
@@ -54,6 +77,8 @@ validateRequest,
         jwt: uJwt
      };
 
+
+     console.log({ user });
     return res.status( 201 ).send( user );
     
 })
