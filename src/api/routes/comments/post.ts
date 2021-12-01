@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import { BadRequest } from '../../errors';
+import { BadRequest, NotAuthorizedError } from '../../errors';
 import { RequestValidationError } from '../../errors/request-validation';
 
 import { Comment, Link, Like } from '../../models';
@@ -32,7 +32,14 @@ validateRequest,
     console.log(req.body);
 
 
-    const { title, link, content, type, categories, tags } = req.body;
+    const { title, link, content, type, categories, tags, userId } = req.body;
+
+    console.log({ userId });
+
+    if(! userId ){
+        throw new NotAuthorizedError()
+    }
+    
     const createdAt = Date.now();
     let linkId = null;
 
