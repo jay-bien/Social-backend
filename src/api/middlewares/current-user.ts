@@ -20,6 +20,8 @@ declare global {
 
 export const currentUser = async ( req: Request, res: Response, next: NextFunction ) => {
 
+
+    console.log( req.headers)
     if( ! req.session?.jwt){
         return next();
     }

@@ -26,7 +26,6 @@ router.post('/', async ( req: Request, res: Response) => {
 
 
 
-      console.log({ response });
       return res.status( 200 ).send({
         data: response
       });

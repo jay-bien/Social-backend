@@ -13,6 +13,8 @@ const router = express.Router();
 // @access private 
 router.get('/', currentUser, async ( req: Request, res: Response ) => {
 
+
+    console.log(req.currentUser);
     const currU = req.currentUser;
     if( ! currU ) return res.status( 400 ).send( { user: null } );
     return res.status( 200 ).send( { user : currU } );

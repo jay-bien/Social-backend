@@ -38,25 +38,18 @@ validateRequest,
         throw new BadRequest("Passwords do not match")
     }
     let user = null;
-    let exists = false;
 
     try{
 
     const exists = await User.findOne({ email });
     if( exists ){
         console.log("Email is in use");
-        throw new BadRequest( 'Email is in use.' )
+        throw new BadRequest( 'Email is already registered.' )
     }
     } catch( e ){
         console.log({ e});
         throw e;
     }
-
-
-
-
-
-  
 
     try{
 
