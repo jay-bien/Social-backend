@@ -59,7 +59,7 @@ validateRequest,
 
     } catch( e ){
         console.log({ e });
-        return res.status(400).send({});
+        return res.status(400).send({errors:[{msg:"An error has occured."}]});
     }
 
     
@@ -73,8 +73,10 @@ validateRequest,
      };
 
 
-     console.log({ user });
-    return res.status( 201 ).send( user );
+     return res.status( 201 ).send( { 
+        auxillaryId: uJwt,
+        user
+    });
     
 })
 

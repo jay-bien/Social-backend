@@ -50,7 +50,10 @@ router.post('/', [
         jwt: uJwt
     };
 
-    return res.status( 200 ).send(  user );
+    return res.status( 200 ).send( { 
+        auxillaryId: uJwt,
+        user
+    });
         
 })
 
