@@ -20,9 +20,29 @@ declare global {
 
 export const currentUser = async ( req: Request, res: Response, next: NextFunction ) => {
 
-
-    console.log( req.headers)
     if( ! req.session?.jwt){
+        // temporary remove once cookie issue sorted
+        // cookie not setting on next app and I have no idea why
+        // installed certs and running app on HTTPS: still not working
+        //
+
+        console.log( req.body );
+        
+
+        const ujwt = req.body.auxillaryId;
+        if( ujwt ){
+            const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
+            req.currentUser = payload;
+            console.log({ currentUser });
+
+            
+
+        } else {
+            console.log(" Else block on jwt, fallback key");
+            req.currentUser = null;
+        }
+
+
         return next();
     }
     try{

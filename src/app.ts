@@ -32,7 +32,8 @@ app.use( cors() );
 app.use( express.urlencoded( { extended: false} ) );
 app.use( express.json() );
 app.use( cookieSession({
-    signed: false
+    signed: false,
+    domain: '.localhost.org:3001'
 }))
 
 
