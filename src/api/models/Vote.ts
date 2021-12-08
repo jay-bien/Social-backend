@@ -1,14 +1,14 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { ObjectID } from "mongodb";
 
-interface LikeAttrs {
+interface VoteAttrs {
     direction: string,
     user: string | null,
     post: string,
 }
 
 
-interface LikeDoc extends mongoose.Document{
+interface VoteDoc extends mongoose.Document{
     direction: string,
     user: string | null,
     post: string,
@@ -16,10 +16,10 @@ interface LikeDoc extends mongoose.Document{
 
 interface LikeModel extends mongoose.Model< any >{
 
-    build( attrs: LikeAttrs ): LikeDoc
+    build( attrs: VoteAttrs ): VoteDoc
 }
 
-const likeSchema = new mongoose.Schema({
+const voteSchema = new mongoose.Schema({
     direction: {
         type: String,
         required: true
@@ -42,11 +42,11 @@ const likeSchema = new mongoose.Schema({
     }
 })
 
-likeSchema.statics.build = ( attrs: LikeAttrs ) => {
+voteSchema.statics.build = ( attrs: VoteAttrs ) => {
     return new Like( attrs );
 }
 
-const Like = mongoose.model< LikeDoc, LikeModel >('Like', likeSchema)
+const Like = mongoose.model< VoteDoc, LikeModel >('Like', voteSchema)
 
 
 

@@ -33,6 +33,17 @@ router.post('/:commentId/:direction', [
         const commentLikes = await Like.find({ post: {'$in': commentId },
                     direction:{'$in': direction}, user:{'$in': userId }});
 
+        console.log({ commentLikes });
+
+        // check if user has already voted
+        if( Array.isArray( commentLikes )){
+            const userLikeIdx = commentLikes.indexOf( like => ( like.user === userId ));
+
+            if( userLikeIdx ){
+                commentLikes.splice( userLikeIdx, 1 );
+                await Like.save()
+            }
+        }
 
     } catch( e ){
         console.log({ e});
