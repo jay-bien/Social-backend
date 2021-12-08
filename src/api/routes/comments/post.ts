@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { BadRequest, NotAuthorizedError } from '../../errors';
 import { RequestValidationError } from '../../errors/request-validation';
 
-import { Comment, Link, Like } from '../../models';
+import { Comment, Link, Vote } from '../../models';
 import { unfurl } from 'unfurl.js';
 
 
@@ -114,7 +114,6 @@ router.get('/', async ( req: Request, res: Response ) => {
 
 router.delete("/:comment_id", async ( req: Request, res: Response ) => {
     
-    console.log(" delete this");
     try{
         const id = req.params.comment_id;
         console.log({ id });
