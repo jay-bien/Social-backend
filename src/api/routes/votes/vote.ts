@@ -84,7 +84,13 @@ router.post('/:commentId/:direction', [
         await userVote.save();
         await comment.save();
         
-        return res.status( 200 ).send({ vote: userVote });
+        const response = {
+            id: commentId,
+            likes: comment.likes,
+            dislikes: comment.dislikes
+        }
+        
+        return res.status( 200 ).send( response );
 
     } catch( e ){
         console.log("Big catch block.")
