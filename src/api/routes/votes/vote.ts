@@ -28,6 +28,7 @@ router.post('/:commentId/:direction', [
 
     try{
         const userVote = await Vote.findOne({ $and: [{ "$comment": commentId}, {"user": userId}]});
+        const comment = await Comment.findById( commentId );
         await Vote.deleteMany({});
 
         console.log({ userVote });
@@ -38,10 +39,29 @@ router.post('/:commentId/:direction', [
                 user: userId
             });
             await userVote.save();
-            let votes = await Vote.find({});
-            console.log({ votes });
+            return res.status( 200 ).send({ vote: userVote });
         } else {
-            console.log(" User has already voted on this post.");
+            
+            if( userVote.direction === direction ){
+                // if user is cancelling vote
+
+                userVote.direction = "neutral";
+
+                direction === "up"
+                ? comment.likes === comment.likes - 1
+                : comment.dislikes === comment.dislikes - 1;
+
+            } else {
+                userVote.direction = direction;
+
+                direction === "up"
+                ? comment.likes === comment.likes + 1
+                : comment.dislikes === comment.dislikes + 1;
+            }
+
+            await userVote.save();
+            await comment.save();
+            return res.status( 200 ).send({ vote: userVote });
         }
 
     } catch( e ){
