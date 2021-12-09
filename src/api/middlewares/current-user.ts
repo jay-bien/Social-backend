@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction} from 'express';
+import e, { Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
 
 /*
@@ -30,7 +30,6 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
         const ujwt = req.body.auxillaryID;
         if( ujwt ){
-
             try{
                 const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
                 req.currentUser = payload;
@@ -40,26 +39,24 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
                 console.log({ e })
             }
 
-
-            
-
         } else {
             console.log(" Else block on jwt, fallback key");
             req.currentUser = null;
         }
 
 
-        next();
-    }
-    try{
+    } else{
+        try{
 
-        const payload =  jwt.verify( req.session?.jwt , "" + process.env.JWT_KEY !) as UserPayload;
-        req.currentUser = payload;
-    } catch( e ){
-        // todo
-        req.currentUser = null;
-        console.log("Bad compare")
+            const payload =  jwt.verify( req.session?.jwt , "" + process.env.JWT_KEY !) as UserPayload;
+            req.currentUser = payload;
+        } catch( e ){
+            // todo
+            req.currentUser = null;
+            console.log("Bad compare")
+        }
     }
+
     next();
 
 }
