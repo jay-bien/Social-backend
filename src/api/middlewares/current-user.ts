@@ -26,14 +26,20 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
         // installed certs and running app on HTTPS: still not working
         //
 
-        console.log( req.body );
         
 
-        const ujwt = req.body.auxillaryId;
+        const ujwt = req.body.auxillaryID;
         if( ujwt ){
-            const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
-            req.currentUser = payload;
-            console.log({ currentUser });
+
+            try{
+                const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
+                req.currentUser = payload;
+                console.log({ payload });
+
+            } catch( e ){
+                console.log({ e })
+            }
+
 
             
 
@@ -43,7 +49,7 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
         }
 
 
-        return next();
+        next();
     }
     try{
 

@@ -2,30 +2,19 @@ import mongoose, { ObjectId } from 'mongoose';
 import { ObjectID } from "mongodb";
 
 interface VoteAttrs {
-    user:{
-        type: ObjectID,
-        required: true,
-        ref: "User"
-    },
-    comment: {
-        type: ObjectID,
-        required: true,
-        ref: "Comment"
-    },
-    direction: {
-        type: -1 | 1,
-        required: true
-    }
+    user: string,
+    comment: string,
+    direction: string
 }
 
 
 interface VoteDoc extends mongoose.Document{
     direction: string,
-    user: string | null,
-    post: string,
+    user: string,
+    comment: string,
 }
 
-interface LikeModel extends mongoose.Model< any >{
+interface VoteModel extends mongoose.Model< any >{
 
     build( attrs: VoteAttrs ): VoteDoc
 }
@@ -37,9 +26,10 @@ const voteSchema = new mongoose.Schema({
     },
     user:{
         type: String,
-        required: false,
+        required: true,
+        ref: "User"
     },
-    post:{
+    comment:{
         type: ObjectID,
         ref: "Post",
         required: true,
@@ -57,7 +47,7 @@ voteSchema.statics.build = ( attrs: VoteAttrs ) => {
     return new Vote( attrs );
 }
 
-const Vote = mongoose.model< VoteDoc, LikeModel >('vote', voteSchema)
+const Vote = mongoose.model< VoteDoc, VoteModel >('Vote', voteSchema)
 
 
 

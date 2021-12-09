@@ -14,6 +14,7 @@ export const requireAuth = async (
     next: NextFunction 
     ) => {
     if( !req.currentUser ){
+        console.log("No user");
         throw new NotAuthorizedError();
     }
 
