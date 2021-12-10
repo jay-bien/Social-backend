@@ -2,8 +2,9 @@ import express, { response } from 'express';
 require('express-async-errors');
 
 
-import bodyParser from 'body-parser';
 import cookieSession from 'cookie-session';
+import cookieParser from 'cookie-parser';
+
 import cors from 'cors';
 
 
@@ -45,9 +46,9 @@ app.use( cors(  corsOptions) );
 app.use( express.urlencoded( { extended: false} ) );
 app.use( express.json() );
 app.use( cookieSession({
-    signed: false,
-    domain: '.localhost.org:3001'
+    signed: false
 }))
+app.use( cookieParser() );
 
 
 app.use( PATHS.signin, Signin );

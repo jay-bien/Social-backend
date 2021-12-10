@@ -13,6 +13,7 @@ const router = express.Router();
 // @access private 
 router.get('/', currentUser, async ( req: Request, res: Response ) => {
 
+    console.log("User route");
 
     console.log(req.currentUser);
     const currU = req.currentUser;

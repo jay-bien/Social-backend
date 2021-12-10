@@ -50,34 +50,16 @@ router.post('/', [
         jwt: uJwt
     };
 
-
-    const session = req.session;
-
-
-    const headers = req.headers;
+    console.log("Session jwt from signing in.");
+    console.log( req.session.jwt );
 
 
 
-    if( !headers ){
-        console.log( " No headers. ");
-        console.log( req.headers );
-        console.log('headers printerd');
-
-    };
 
 
-
-    return res.cookie(
-        'jwt', uJwt,
-        { domain: '.localhost.org'}
-    ).cookie('expre', uJwt, {
-    }).cookie('jwt3', uJwt, {
-        domain:'.localhost.org:3003'
-    }).status( 200 ).send( { 
-        auxillaryId: uJwt,
+    return res.status( 200 ).send( { 
         user
     });
-    console.log({ uJwt });
         
 })
 

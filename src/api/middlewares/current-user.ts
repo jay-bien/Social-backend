@@ -1,5 +1,7 @@
 import e, { Request, Response, NextFunction} from 'express';
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
+
 
 /*
 if client sends valid jwt,
@@ -20,47 +22,25 @@ declare global {
 
 export const currentUser = async ( req: Request, res: Response, next: NextFunction ) => {
 
-    if( ! req.session?.jwt){
-        // temporary remove once cookie issue sorted
-        // cookie not setting on next app and I have no idea why
-        // installed certs and running app on HTTPS: still not working
-        //
-
-        
-
-        const ujwt = req.body.auxillaryID;
-        console.log( req.body );
-        console.log( { ujwt });
-
-        if( ujwt ){
-            try{
-                const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
-                req.currentUser = payload;
-                console.log({ payload });
-
-            } catch( e ){
-                console.log({ e })
-            }
-
-        } else {
-            console.log( { ujwt });
-            console.log(req.body);
-
-            console.log(" Else block on ujwt, fallback key");
-            req.currentUser = null;
-        }
 
 
-    } else{
-        try{
+    console.log( req.session );
 
-            const payload =  jwt.verify( req.session?.jwt , "" + process.env.JWT_KEY !) as UserPayload;
-            req.currentUser = payload;
-        } catch( e ){
-            // todo
-            req.currentUser = null;
-            console.log("Bad compare")
-        }
+    console.log( 'cookies', req.cookies );
+    console.log( 'cookies', req.headers.cookie);
+    console.log('jwt', req.session?.jwt);
+
+    const cookie = req.headers.cookie?.split("=");
+
+    
+    try{
+
+        const payload =  jwt.verify( cookie![ 1 ] , "" + process.env.JWT_KEY !) as UserPayload;
+        req.currentUser = payload;
+    } catch( e ){
+        // todo
+        req.currentUser = null;
+        console.log("Bad compare")
     }
 
     next();
