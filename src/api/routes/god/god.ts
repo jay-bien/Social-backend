@@ -10,8 +10,6 @@ router.get("/", async ( req: Request, res: Response) => {
     console.log("god route");
 
 
-    const isAdmin = req.isAdmin;
-    console.log({isAdmin});
 
 
 
@@ -30,3 +28,6 @@ router.get("/", async ( req: Request, res: Response) => {
 
     })
 })
+
+
+export default router;

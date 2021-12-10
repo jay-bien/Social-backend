@@ -1,6 +1,7 @@
-
-
-const   PATHS = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PATHS = void 0;
+var PATHS = {
     signup: "/signup",
     signin: "/signin",
     signout: "/signout",
@@ -10,8 +11,5 @@ const   PATHS = {
     posts: "/post",
     votes: "/vote",
     history: "/history"
-} 
-
-export {
-    PATHS
-}
+};
+exports.PATHS = PATHS;

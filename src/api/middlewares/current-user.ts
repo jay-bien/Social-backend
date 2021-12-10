@@ -29,6 +29,9 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
         
 
         const ujwt = req.body.auxillaryID;
+        console.log( req.body );
+        console.log( { ujwt });
+
         if( ujwt ){
             try{
                 const payload = jwt.verify( ujwt, "" + process.env.JWT_KEY !) as UserPayload;
@@ -40,7 +43,10 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
             }
 
         } else {
-            console.log(" Else block on jwt, fallback key");
+            console.log( { ujwt });
+            console.log(req.body);
+
+            console.log(" Else block on ujwt, fallback key");
             req.currentUser = null;
         }
 
