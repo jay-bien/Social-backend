@@ -60,6 +60,7 @@ app.use(constants_1.PATHS.posts, routes_1.Posts);
 app.use(constants_1.PATHS.link, routes_1.LinkPost);
 app.use(constants_1.PATHS.votes, routes_1.Votes);
 app.use(constants_1.PATHS.history, routes_1.History);
+app.use(constants_1.PATHS.bookmark, routes_1.Bookmark);
 app.get('/history/', function () {
     console.log("history");
     return express_1.response.status(200).send({});

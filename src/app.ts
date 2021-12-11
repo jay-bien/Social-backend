@@ -21,7 +21,8 @@ import { Signin,
          LinkPost,
          Posts,
          Votes,
-         History
+         History,
+         Bookmark
         } 
         from './api/routes';
 
@@ -32,6 +33,7 @@ import { NotFoundError } from './api/errors/404';
 
 
 const whitelist = ['http://localhost:3000', 'https://dap-next-jay-bien.vercel.app/'];
+
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -59,11 +61,8 @@ app.use( PATHS.posts, Posts );
 app.use( PATHS.link, LinkPost );
 app.use( PATHS.votes , Votes );
 app.use( PATHS.history , History );
-app.get('/history/', () => {
-    console.log("history");
+app.use( PATHS.bookmark, Bookmark );
 
-    return response.status( 200).send({});
-})
 
 app.all( '*', ()=>{
     console.log("404 route");

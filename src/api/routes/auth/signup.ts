@@ -37,7 +37,6 @@ validateRequest,
     if('' + password.trim() !== '' + password2.trim() ){
         throw new BadRequest("Passwords do not match")
     }
-    let user = null;
 
     try{
 
@@ -53,16 +52,8 @@ validateRequest,
 
     try{
 
-    user = User.build( { email, password } );
+    const user = User.build( { email, password } );
     await user.save();
-
-
-    } catch( e ){
-        console.log({ e });
-        return res.status(400).send({errors:[{msg:"An error has occured."}]});
-    }
-
-    
     const uJwt = jwt.sign({
         id: user.id,
         email: user.email
@@ -77,6 +68,17 @@ validateRequest,
         auxillaryId: uJwt,
         user
     });
+
+
+    } catch( e ){
+        console.log({ e });
+        return res.status(400).send({errors:[{msg:"An error has occured."}]});
+    }
+
+
+    return res.status( 400 ).send({})
+    
+
     
 })
 
