@@ -107,8 +107,8 @@ router.get('/', async ( req: Request, res: Response ) => {
 
         let allComments = [];
 
-            allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
-            console.log({ allComments });
+        allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
+        console.log({ allComments });
         
 
         return res.status(200).send({ comments: allComments});

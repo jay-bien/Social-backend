@@ -37,18 +37,14 @@ router.post('/:commentId/:direction', [
 
 
     try{
-        let userVote = await Vote.findOne({ "$comment": commentId, "author": userId}        );
-       
+        let userVote = await Vote.findOne({ "commentId": commentId, "author": userId}        );
+        console.log({ userVote });
 
         if(! userVote ){
             //user has not already voted
-            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
-                author: userId,
-                direction,
-                commentId
-            },{
-                upsert: true
-            });
+            userVote = await Vote.build(
+                {"commentId": commentId, "author": userId, direction}
+                );
 
         } else {
 
@@ -59,22 +55,17 @@ router.post('/:commentId/:direction', [
             if( userVote.direction === direction ){
                 // if user is cancelling vote
 
-            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
-                author: userId,
-                direction: "neutral",
-                commentId
-            })
+            
+                userVote.direction = "neutral";
 
 
 
             } else {
                 // user is not cancelling vote
 
-            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
-                author: userId,
-                direction: direction,
-                commentId
-            })
+            
+                userVote.direction = direction;
+
             
 
             }
