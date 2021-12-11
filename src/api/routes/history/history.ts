@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { BadRequest, NotAuthorizedError } from '../../errors';
 import { RequestValidationError } from '../../errors/request-validation';
 
-import { Comment, Link, Vote } from '../../models';
+import { Comment, Link, Vote , Bookmark} from '../../models';
 import { unfurl } from 'unfurl.js';
 
 
@@ -25,11 +25,15 @@ currentUser,
 
     const user = req.currentUser;
     const userId = req.currentUser?.id;
-    console.log({ user });
 
         let allVotes = await Vote.find({
             author: userId
-        });
+        }).populate('post')
+        .sort({ "created_at": -1 });
+        let allBookmarks = await Bookmark.find({
+            author: userId
+        }).populate('post')
+        .sort({ "created_at": -1 });
 
         let allComments = [];
 
@@ -40,7 +44,7 @@ currentUser,
           
         
 
-        return res.status(200).send({ comments: allComments, votes: allVotes});
+        return res.status(200).send({ comments: allComments, votes: allVotes, bookmarks: allBookmarks});
 
     } catch( e ){
         console.log({ e });

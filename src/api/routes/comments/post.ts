@@ -121,6 +121,27 @@ router.get('/', async ( req: Request, res: Response ) => {
     return;
 })
 
+// @route 
+// @desc 
+// @access 
+router.get('/:id', async ( req: Request, res: Response ) => {
+    try{
+  
+        const id = req.params.id;
+         const comment = await Comment.findById( id ).populate('link');
+        console.log({ comment });
+        
+
+        return res.status(200).send({ comment });
+
+    } catch( e ){
+        console.log({ e });
+    }
+
+    res.status(200).send({})
+    return;
+})
+
 router.delete("/:comment_id", async ( req: Request, res: Response ) => {
     
     try{
