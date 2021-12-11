@@ -42,8 +42,9 @@ router.post('/:commentId/:direction', [
 
         if(! userVote ){
             //user has not already voted
+            const createdAt = Date.now();
             userVote = await Vote.build(
-                {"commentId": commentId, "author": userId, direction}
+                {"commentId": commentId, "author": userId, direction,  created_at: createdAt}
                 );
 
         } else {

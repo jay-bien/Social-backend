@@ -50,7 +50,7 @@ validateRequest,
     if( link ) {    
         const unfurlResult = await unfurl( link );
         console.log( unfurlResult );
-        const linkDoc = Link.build({ url: link, metadata: unfurlResult });
+        const linkDoc = Link.build({ url: link, metadata: unfurlResult, created_at: createdAt });
         await linkDoc.save();
         linkId = linkDoc._id;
         console.log({ linkDoc });

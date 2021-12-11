@@ -11,7 +11,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    created_at:{
+        type: Number,
+        required: true
+    },
     genderID:{
+        type: Number,
+        required: false
+    },
+    userName:{
+        type: String,
+        required: false
+    },
+    lastActive:{
         type: Number,
         required: false
     },
@@ -52,10 +64,12 @@ userSchema.pre('save', async function( done ){
 interface UserAttrs {
     email: string;
     password: string;
+    created_at: number;
 }
 interface UserDoc extends mongoose.Document{
     email: string,
-    password: string
+    password: string;
+    created_at: number;
 }
 
 userSchema.statics.build = ( attrs: UserAttrs ) => {

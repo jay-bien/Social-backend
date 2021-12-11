@@ -37,12 +37,12 @@ router.post('/:commentId', [
 
     try{
         let userBookmark = await Bookmark.findOne({ "commentId": commentId, "author": userId}        );
-        console.log({ userBookmark });
+        const createdAt = Date.now();
 
         if(! userBookmark ){
             //user has not already bookmarkd
             userBookmark = await Bookmark.build(
-                {"commentId": commentId, "author": userId }
+                {"commentId": commentId, "author": userId,  created_at: createdAt }
                 );
                 await userBookmark.save();
                 return res.status( 201 ).send({ userBookmark });

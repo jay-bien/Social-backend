@@ -4,12 +4,16 @@ import { ObjectID } from "mongodb";
 interface BookmarkAttrs {
     author: string,
     commentId: string,
+    created_at: number
+
 }
 
 
 interface BookmarkDoc extends mongoose.Document{
     author: string,
     commentId: string,
+    created_at: number
+
 }
 
 interface BookmarkModel extends mongoose.Model< any >{
@@ -27,6 +31,10 @@ const bookmarkSchema = new mongoose.Schema({
         type: ObjectID,
         ref: "Post",
         required: true,
+    },
+    createdAt: {
+        type: Number,
+        required: true
     }
 }, {
     toJSON: {

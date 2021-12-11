@@ -4,12 +4,15 @@ import { ObjectID } from "mongodb";
 interface LinkAttrs {
     url: string,
     metadata: object,
+    created_at: number
+
 }
 
 
 interface LinkDoc extends mongoose.Document{
     url: string,
     metadata: object,
+    created_at: number
 }
 
 interface LinkModel extends mongoose.Model< any >{
@@ -24,6 +27,10 @@ const linkSchema = new mongoose.Schema({
     },
     metadata:{
         type: Object,
+        required: true
+    },
+    created_at:{
+        type: Number,
         required: true
     }
 }, {

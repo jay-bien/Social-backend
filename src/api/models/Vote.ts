@@ -4,7 +4,8 @@ import { ObjectID } from "mongodb";
 interface VoteAttrs {
     author: string,
     commentId: string,
-    direction: string
+    direction: string,
+    created_at: number
 }
 
 
@@ -12,6 +13,7 @@ interface VoteDoc extends mongoose.Document{
     direction: string,
     author: string,
     commentId: string,
+    created_at: number
 }
 
 interface VoteModel extends mongoose.Model< any >{
@@ -33,6 +35,10 @@ const voteSchema = new mongoose.Schema({
         type: ObjectID,
         ref: "Post",
         required: true,
+    },
+    created_at:{
+        type: Number,
+        required: true
     }
 }, {
     toJSON: {
