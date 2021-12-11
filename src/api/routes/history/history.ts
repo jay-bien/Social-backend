@@ -28,22 +28,27 @@ currentUser,
 
         let allVotes = await Vote.find({
             author: userId
-        }).populate('post')
+        }).populate('commentId')
+        .populate("author")
         .sort({ "created_at": -1 });
         let allBookmarks = await Bookmark.find({
             author: userId
-        }).populate('post')
+        }).populate('commentId')
         .sort({ "created_at": -1 });
 
         let allComments = [];
 
             allComments = await Comment.find({ author: userId
-            }).populate('link').sort({ "created_at": -1 });
+            }).populate("author")
+            .populate('link').sort({ "created_at": -1 });
             console.log({ allComments });
             console.log( userId );
           
         
-
+        console.log({ allVotes });
+        console.log({
+            allComments
+        })
         return res.status(200).send({ comments: allComments, votes: allVotes, bookmarks: allBookmarks});
 
     } catch( e ){

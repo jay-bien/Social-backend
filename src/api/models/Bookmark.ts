@@ -4,7 +4,7 @@ import { ObjectID } from "mongodb";
 interface BookmarkAttrs {
     author: string,
     commentId: string,
-    created_at: number
+    createdAt: number
 
 }
 
@@ -12,7 +12,7 @@ interface BookmarkAttrs {
 interface BookmarkDoc extends mongoose.Document{
     author: string,
     commentId: string,
-    created_at: number
+    createdAt: number
 
 }
 
@@ -29,7 +29,7 @@ const bookmarkSchema = new mongoose.Schema({
     },
     commentId:{
         type: ObjectID,
-        ref: "Post",
+        ref: "Comment",
         required: true,
     },
     createdAt: {

@@ -2,7 +2,7 @@ import express, { Request, response, Response } from 'express';
 
 import { Vote, Comment } from '../../models';
 import { requireAuth, currentUser } from '../../middlewares';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -32,19 +32,21 @@ router.post('/:commentId/:direction', [
     const direction = req.params.direction;
     const commentId = req.params.commentId;
     const userId = req.currentUser!.id;
+    const commentIdParsed = mongoose.Types.ObjectId( commentId );
+    const authorParsed = mongoose.Types.ObjectId( userId )
 
     // try to find if user has already voted 
 
 
     try{
-        let userVote = await Vote.findOne({ "commentId": commentId, "author": userId}        );
+        let userVote = await Vote.findOne({ "commentId": commentIdParsed, "author": authorParsed }        );
         console.log({ userVote });
 
         if(! userVote ){
             //user has not already voted
             const createdAt = Date.now();
             userVote = await Vote.build(
-                {"commentId": commentId, "author": userId, direction,  created_at: createdAt}
+                {"commentId": commentIdParsed, "author": authorParsed, direction,  created_at: createdAt}
                 );
 
         } else {
@@ -52,7 +54,6 @@ router.post('/:commentId/:direction', [
             // user vote needs to be modified
 
 
-            
             if( userVote.direction === direction ){
                 // if user is cancelling vote
 

@@ -50,7 +50,6 @@ app.use( express.json() );
 app.use( cookieSession({
     signed: false
 }))
-app.use( cookieParser() );
 
 
 app.use( PATHS.signin, Signin );

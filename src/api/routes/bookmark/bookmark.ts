@@ -42,7 +42,7 @@ router.post('/:commentId', [
         if(! userBookmark ){
             //user has not already bookmarkd
             userBookmark = await Bookmark.build(
-                {"commentId": commentId, "author": userId,  created_at: createdAt }
+                {"commentId": commentId, "author": userId,  createdAt }
                 );
                 await userBookmark.save();
                 return res.status( 201 ).send({ userBookmark });
