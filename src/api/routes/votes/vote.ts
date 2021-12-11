@@ -73,7 +73,6 @@ router.post('/:commentId/:direction', [
 
         await userVote.save();
         const votes = await Vote.find({});
-        console.log({ votes });
         const likes = await Vote.find({ commentId, direction:"up" });
         const dislikes = await Vote.find({ commentId, direction:"down"})
 
@@ -82,15 +81,11 @@ router.post('/:commentId/:direction', [
             dislikes: dislikes.length,
             commentId
         }
+        console.log({ response });
 
-        console.log({
-            response
-        })
-        
         return res.status( 200 ).send( response );
 
     } catch( e ){
-        console.log("Big catch block.")
         console.log({ e });
         return res.status( 400 ).send({});
     }
