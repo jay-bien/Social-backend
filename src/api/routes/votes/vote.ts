@@ -1,10 +1,23 @@
-import express, { Request, Response } from 'express';
+import express, { Request, response, Response } from 'express';
 
 import { Vote, Comment } from '../../models';
 import { requireAuth, currentUser } from '../../middlewares';
 import mongoose from 'mongoose'
 
 const router = express.Router();
+
+
+
+// development only
+router.delete('/', 
+    async ( req: Request, res: Response ) => {
+
+    await Vote.deleteMany({});
+
+    const votes = await Vote.find({});
+    return res.status( 200 ).send({votes})
+});
+
 
 
 router.post('/:commentId/:direction', [
@@ -15,80 +28,73 @@ router.post('/:commentId/:direction', [
 
 
     const user = req.currentUser;
+
     const direction = req.params.direction;
     const commentId = req.params.commentId;
     const userId = req.currentUser!.id;
-    console.log("OK VOTE")
 
     // try to find if user has already voted 
 
+
     try{
-        let userVote = await Vote.findOne({ $and: [{ "$comment": commentId}, {"user": userId}]});
-        const comment = await Comment.findById( commentId );
+        let userVote = await Vote.findOne({ "$comment": commentId, "author": userId}        );
+       
 
-        if(!userVote ){
-            console.log("No vote");
-
-            // user vote needs to be created
-            userVote = Vote.build({
-                comment: commentId,
-                direction: direction,
-                user: userId
+        if(! userVote ){
+            //user has not already voted
+            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
+                author: userId,
+                direction,
+                commentId
+            },{
+                upsert: true
             });
-            
-            // update like count on comment doc
-            console.log(" SEt vote to 0");
-            direction === "up"
-            ? comment.likes = 1
-            : comment.dislikes = 1;
-            console.log({ comment });
-
 
         } else {
 
             // user vote needs to be modified
-            console.log("Modify vote");
+
 
             
             if( userVote.direction === direction ){
                 // if user is cancelling vote
 
-                console.log("Cancel vote");
+            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
+                author: userId,
+                direction: "neutral",
+                commentId
+            })
 
-                userVote.direction = "neutral";
-
-            // update like count on comment doc
-                direction === "up"
-                ? comment.likes = comment.likes - 1
-                : comment.dislikes = comment.dislikes - 1;
-                console.log({ comment });
 
 
             } else {
                 // user is not cancelling vote
-                userVote.direction = direction;
-                console.log("Switch vote");
 
+            userVote = await Vote.findOneAndUpdate({ "$comment": commentId, "author": userId},{
+                author: userId,
+                direction: direction,
+                commentId
+            })
+            
 
-
-                // update like count on comment doc
-                direction === "up"
-                ? comment.likes = comment.likes + 1
-                : comment.dislikes = comment.dislikes + 1;
-
-                console.log({ comment });
             }
         }
 
-        console.log( comment )
         await userVote.save();
-        await comment.save();
-        
+        const votes = await Vote.find({});
+        console.log({ votes });
+        const likes = await Vote.find({ commentId, direction:"up" });
+        const dislikes = await Vote.find({ commentId, direction:"down"})
+
         const response = {
-            id: commentId,
-            likes: comment.likes,
-            dislikes: comment.dislikes
+            likes: likes.length,
+            dislikes: dislikes.length,
+            commentId
         }
+
+        console.log({
+            response
+        })
         
         return res.status( 200 ).send( response );
 

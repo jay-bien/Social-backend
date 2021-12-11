@@ -8,7 +8,7 @@ import { unfurl } from 'unfurl.js';
 
 
 import jwt from 'jsonwebtoken';
-import { validateRequest } from '../../middlewares';
+import { currentUser, validateRequest } from '../../middlewares';
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
 // @desc sign up a user
 // @access public
 
-router.post('/', [
+router.post('/', currentUser, [
 
     body('title').
         trim()
@@ -29,12 +29,12 @@ router.post('/', [
 validateRequest,
  async ( req: Request, res: Response ) => {
 
-    console.log(req.body);
 
 
-    const { title, link, content, type, categories, tags, userId } = req.body;
+    const { title, link, content, type, categories, tags } = req.body;
 
-    console.log({ userId });
+    const user = req.currentUser;
+    const userId = user?.id;
 
     if(! userId ){
         throw new NotAuthorizedError()
@@ -67,7 +67,8 @@ validateRequest,
         const commentDoc = Comment.build( { 
             title,
              link: linkId, 
-             content, author:"",
+             content,
+              author: userId,
               parentId:"",
                rootId:"",
                 likes:0,

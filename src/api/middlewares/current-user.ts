@@ -24,14 +24,9 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
 
 
-    console.log( req.session );
-
-    console.log( 'cookies', req.cookies );
-    console.log( 'cookies', req.headers.cookie);
-    console.log('jwt', req.session?.jwt);
-
     const cookie = req.headers.cookie?.split("=");
-
+    console.log( req.headers.cookie );
+    console.log({ cookie });
     
     try{
 

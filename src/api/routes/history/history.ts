@@ -18,24 +18,26 @@ const router = express.Router();
 // @route 
 // @desc 
 // @access 
-router.post('/', 
+router.get('/', 
 currentUser,
  async ( req: Request, res: Response ) => {
     try{
 
     const user = req.currentUser;
     const userId = req.currentUser?.id;
+    console.log({ user });
 
-        let allVotes = await Vote.find();
+        let allVotes = await Vote.find({
+            author: userId
+        });
 
         let allComments = [];
 
-            allComments = await Comment.find({
-
+            allComments = await Comment.find({ author: userId
             }).populate('link').sort({ "created_at": -1 });
+            console.log({ allComments });
             console.log( userId );
           
-            console.log({ allVotes });
         
 
         return res.status(200).send({ comments: allComments, votes: allVotes});
