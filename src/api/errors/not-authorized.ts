@@ -11,6 +11,6 @@ export class NotAuthorizedError extends CustomError {
         Object.setPrototypeOf( this, NotAuthorizedError.prototype );
     }
     serializeErrors( ){
-        return [{ msg: "Not Authorized"}]
+        return [{ msg: "Not Authorized to perform that action. Please login with a valid account."}]
     }
 }

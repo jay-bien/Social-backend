@@ -40,7 +40,7 @@ router.post('/:commentId/:direction', [
 
     try{
         let userVote = await Vote.findOne({ "commentId": commentIdParsed, "author": authorParsed }        );
-        console.log({ userVote });
+        let comment = await Comment.findById( commentIdParsed );
 
         if(! userVote ){
             //user has not already voted
@@ -49,6 +49,7 @@ router.post('/:commentId/:direction', [
                 {"commentId": commentIdParsed, "author": authorParsed, direction,  created_at: createdAt}
                 );
 
+        
         } else {
 
             // user vote needs to be modified
@@ -59,24 +60,30 @@ router.post('/:commentId/:direction', [
 
             
                 userVote.direction = "neutral";
+  
 
 
 
             } else {
                 // user is not cancelling vote
-
-            
+                // vote needs to switch directions not be cancelled
                 userVote.direction = direction;
-
-            
+   
 
             }
         }
 
         await userVote.save();
-        const votes = await Vote.find({});
+        console.log({ comment });
+
         const likes = await Vote.find({ commentId, direction:"up" });
-        const dislikes = await Vote.find({ commentId, direction:"down"})
+        const dislikes = await Vote.find({ commentId, direction:"down"});
+
+
+        comment.likes = likes.length;
+        comment.dislikes = dislikes.length;
+        await comment.save();
+
 
         const response = {
             likes: likes.length,

@@ -111,10 +111,11 @@ validateRequest,
 // @route 
 // @desc 
 // @access 
-router.get('/', async ( req: Request, res: Response ) => {
+router.get('/', currentUser, async ( req: Request, res: Response ) => {
     try{
-        console.log("Req body");
         const body = req.body;
+
+        
         console.log({ body });
 
         let allComments = [];
