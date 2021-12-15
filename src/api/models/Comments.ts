@@ -86,6 +86,9 @@ const commentSchema = new mongoose.Schema({
     created_at: {
         type: Number,
         required: true
+    },
+    is_deleted:{
+        type: Boolean
     }
 }, {
     toJSON: {

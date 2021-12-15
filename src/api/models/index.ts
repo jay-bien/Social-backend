@@ -6,3 +6,4 @@ export { Comment } from './Comments';
 export { Vote } from './Vote';
 export { Link } from './Link';
 export { Bookmark } from './Bookmark';
+export { Click } from './Activity'

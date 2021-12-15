@@ -8,7 +8,7 @@ import { unfurl } from 'unfurl.js';
 
 
 import jwt from 'jsonwebtoken';
-import { currentUser, validateRequest } from '../../middlewares';
+import { currentUser, requireAuth, validateRequest } from '../../middlewares';
 
 const router = express.Router();
 
@@ -115,13 +115,14 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
     try{
         const body = req.body;
 
-        
+
         console.log({ body });
 
         let allComments = [];
 
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
-        console.log({ allComments });
+
+
         
 
         return res.status(200).send({ comments: allComments});

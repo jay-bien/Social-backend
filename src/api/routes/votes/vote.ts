@@ -19,7 +19,21 @@ router.delete('/',
 });
 
 
+router.get('/', [
+    currentUser, requireAuth
+], async( req: Request, res:Response ) => {
+    console.log("votes route");
 
+    try{
+        const id = req.currentUser.id;
+        const userVotes = await Vote.find({ author: id});
+        console.log({ userVotes });
+
+    } catch( e ){
+        console.log({ e });
+    }
+
+})
 router.post('/:commentId/:direction', [
     currentUser, requireAuth
 ],
@@ -98,74 +112,6 @@ router.post('/:commentId/:direction', [
         console.log({ e });
         return res.status( 400 ).send({});
     }
-
-
-
-    // if( direction ==="up"){
-
-    //     try{
-            
-        
-    //         const voteDoc = Vote.build({
-    //             comment: commentId,
-    //             direction: "up",
-    //             user: "user"
-    //         })
-        
-    //         await voteDoc.save();
-    //         console.log({ commentId });
-    
-    //         const comment = await Comment.findById( commentId).populate("link");
-    //         const commentLikes = await Vote.find({ post: {'$in': commentId },
-    //                 direction:{'$in': direction}});
-                    
-    //         if( comment ){
-    //             comment.likes = commentLikes.length;
-    //             await comment.save();
-    //             return res.status( 201 ).send( comment );
-
-    //         }   
-    //         return res.status( 200 ).send({});
-    
-    //     } catch( e ){
-    //         console.log( e );
-    //         return res.status( 400 ).send({});
-    //     }
-
-    // } else if( direction==="down"){
-
-    //     try{
-        
-    //         const voteDoc = Vote.build({
-    //             comment: commentId,
-    //             direction: "down",
-    //             user: commentId
-    //         })
-        
-    //         await voteDoc.save();
-    
-    //         const comment = await Comment.findById( commentId);
-    //         const commentDislikes = await Vote.find({ post: {'$in': commentId }, direction:{'$in': direction}});
-    //         if( comment ){
-    //             comment.dislikes = commentDislikes.length;
-    //             await comment.save();
-    //             return res.status( 201 ).send( comment );
-    //         }
-
-    //         return res.status( 200 ).send({})
-    
-    //     } catch( e ){
-    //         return res.status( 400 ).send({});
-    //     }
-
-    // } else {
-
-    // }
-
-  
-
-
-
 } );
 
 export default router;

@@ -52,7 +52,8 @@ validateRequest,
 
     try{
 
-    const user = User.build( { email, password } );
+    const created = Date.now();
+    const user = User.build( { email, password, created_at: created } );
     await user.save();
     const uJwt = jwt.sign({
         id: user.id,

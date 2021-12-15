@@ -26,11 +26,20 @@ currentUser,
     const user = req.currentUser;
     const userId = req.currentUser?.id;
 
-        let allVotes = await Vote.find({
-            author: userId
+        let upVotes = await Vote.find({
+            author: userId,
+            direction:"up"
         }).populate('commentId')
         .populate("author")
         .sort({ "created_at": -1 });
+
+        let downVotes = await Vote.find({
+            author: userId,
+            direction:"down"
+        }).populate('commentId')
+        .populate("author")
+        .sort({ "created_at": -1 });
+
         let allBookmarks = await Bookmark.find({
             author: userId
         }).populate('commentId')
@@ -41,15 +50,10 @@ currentUser,
             allComments = await Comment.find({ author: userId
             }).populate("author")
             .populate('link').sort({ "created_at": -1 });
-            console.log({ allComments });
-            console.log( userId );
+     
           
-        
-        console.log({ allVotes });
-        console.log({
-            allComments
-        })
-        return res.status(200).send({ comments: allComments, votes: allVotes, bookmarks: allBookmarks});
+    
+        return res.status(200).send({ comments: allComments, upVotes, downVotes, bookmarks: allBookmarks});
 
     } catch( e ){
         console.log({ e });
