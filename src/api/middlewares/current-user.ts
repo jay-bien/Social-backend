@@ -25,18 +25,15 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
 
     const cookieHeaders = req.headers.cookie;
-    console.log({ cookieHeaders });
-    let cookie = null;
-    if( cookieHeaders && cookieHeaders.length ){
-        cookie = cookieHeaders.split('=')[1];
+    let token = req.session?.jwt;
+    console.log( req.session?.jwt );
 
 
         const jwtKey = process.env.JWT_KEY!;
-        console.log({ cookie });
     
         try{
             
-            const payload =  jwt.verify( cookie, "" + jwtKey) as UserPayload;
+            const payload =  jwt.verify( token, jwtKey) as UserPayload;
             req.currentUser = payload;
         } catch( e ){
             // todo
@@ -44,7 +41,7 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
             req.currentUser = null;
             console.log("Bad compare")
         }
-    } 
+
 
 
     next();
