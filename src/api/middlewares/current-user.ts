@@ -25,6 +25,7 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
 
     const cookieHeaders = req.headers.cookie;
+    console.log({ cookieHeaders });
     let cookie = null;
     if( cookieHeaders && cookieHeaders.length ){
         cookie = cookieHeaders.split('=')[1];

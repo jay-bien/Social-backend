@@ -20,16 +20,15 @@ router.delete('/',
 
 
 router.get('/', [
-    currentUser
+    currentUser, requireAuth
 ], async( req: Request, res:Response ) => {
-    console.log("votes route");
 
     console.log( req.currentUser );
 
     try{
         const id = req.currentUser.id;
         const userVotes = await Vote.find({ author: id});
-        console.log({ userVotes });
+        return res.status( 200 ).send(userVotes);
 
     } catch( e ){
         console.log({ e });
