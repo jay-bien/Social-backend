@@ -24,16 +24,20 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
 
 
-    const cookie = req.headers.cookie?.split("=");
+    const cookie = req.headers.cookie.split("=")[1];
     console.log( req.headers.cookie );
     console.log({ cookie });
-    
-    try{
+    const jwtKey = process.env.JWT_KEY!;
 
-        const payload =  jwt.verify( cookie![ 1 ] , "" + process.env.JWT_KEY !) as UserPayload;
+    console.log({ cookie });
+    console.log({ jwtKey});
+    try{
+        
+        const payload =  jwt.verify( cookie, jwtKey) as UserPayload;
         req.currentUser = payload;
     } catch( e ){
         // todo
+        console.log({ e });
         req.currentUser = null;
         console.log("Bad compare")
     }

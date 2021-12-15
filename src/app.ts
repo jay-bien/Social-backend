@@ -32,10 +32,15 @@ import { CustomError } from './api/errors';
 import { NotFoundError } from './api/errors/404';
 
 
-const whitelist = ['http://localhost:3000', 'https://dap-next-jay-bien.vercel.app/'];
+const whitelist = [
+    'http://localhost:3000',
+    'https://dap-next-jay-bien.vercel.app/',
+    'localhost:3000',
+    'http://localhost:3000.org'
+];
 
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: function ( origin : any, callback : any ): any {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
@@ -44,7 +49,10 @@ const corsOptions = {
   }
 }
 
-app.use( cors(  corsOptions) );
+app.use( cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}) );
 app.use( express.urlencoded( { extended: false} ) );
 app.use( express.json() );
 app.use( cookieSession({

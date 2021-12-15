@@ -4,15 +4,17 @@ import { ObjectID } from "mongodb";
 
 export enum ActivityTypes {
     Login,
-    ViewedHome,
-    ViewedPost
+    Signup,
+    ViewedPage,
+    ViewedPost,
 }
 
 interface ActivityAttrs {
     author: string,
     commentId: string,
     createdAt: number
-    type: ActivityTypes
+    type: ActivityTypes,
+    page: string
 
 }
 
@@ -20,7 +22,9 @@ interface ActivityAttrs {
 interface ActivityDoc extends mongoose.Document{
     author: string,
     commentId: string,
-    createdAt: number
+    created_at: number,
+    type: string,
+    page: string
 }
 
 interface ActivityModel extends mongoose.Model< any >{
@@ -39,9 +43,17 @@ const activitySchema = new mongoose.Schema({
         ref: "Comment",
         required: true,
     },
-    createdAt: {
+    created_at: {
         type: Number,
         required: true
+    },
+    type:{
+        type: String,
+        required: true
+    },
+    page: {
+        type: String,
+        required:true
     }
 }, {
     toJSON: {
