@@ -2,24 +2,24 @@ import mongoose, { ObjectId } from 'mongoose';
 import { ObjectID } from "mongodb";
 
 
-export enum ActivityTypes {
+export enum ClickTypes {
     Login,
     Signup,
     ViewedPage,
     ViewedPost,
 }
 
-interface ActivityAttrs {
+interface ClickAttrs {
     author: string,
     commentId: string,
     createdAt: number
-    type: ActivityTypes,
+    type: string,
     page: string
 
 }
 
 
-interface ActivityDoc extends mongoose.Document{
+interface ClickDoc extends mongoose.Document{
     author: string,
     commentId: string,
     created_at: number,
@@ -27,12 +27,12 @@ interface ActivityDoc extends mongoose.Document{
     page: string
 }
 
-interface ActivityModel extends mongoose.Model< any >{
+interface ClickModel extends mongoose.Model< any >{
 
-    build( attrs: ActivityAttrs ): ActivityDoc
+    build( attrs: ClickAttrs ): ClickDoc
 }
 
-const activitySchema = new mongoose.Schema({
+const clickSchema = new mongoose.Schema({
     author:{
         type: ObjectID,
         required: true,
@@ -64,11 +64,11 @@ const activitySchema = new mongoose.Schema({
     }
 })
 
-activitySchema.statics.build = ( attrs: ActivityAttrs ) => {
-    return new Activity( attrs );
+clickSchema.statics.build = ( attrs: ClickAttrs ) => {
+    return new Click( attrs );
 }
 
-const Click = mongoose.model< ActivityDoc, ActivityModel >('Activity', activitySchema)
+const Click = mongoose.model< ClickDoc, ClickModel >('Click', clickSchema)
 
 
 

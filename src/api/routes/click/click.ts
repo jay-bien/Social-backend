@@ -1,8 +1,9 @@
 import express, { Request, response, Response } from 'express';
 
 import { Click } from '../../models';
+import { ActivityTypes } from '../../models/Activity';
 import { requireAuth, currentUser } from '../../middlewares';
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -42,7 +43,10 @@ router.post('/:commentId', [
         if(! userClick ){
             //user has not already clickd
             userClick = await Click.build(
-                {"commentId": commentId, "author": userId,  createdAt }
+                {
+                    "commentId": commentId, "author": userId,  createdAt,
+                    type: 'pageView', page:"page" 
+                }
                 );
                 await userClick.save();
                 return res.status( 201 ).send({ userClick });

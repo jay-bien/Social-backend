@@ -36,12 +36,12 @@ router.post('/', [
 
 
     try{
-        let usercategory = await category.findOne({ "commentId": commentId, "author": userId}        );
+        let usercategory = await Category.findOne({ "commentId": commentId, "author": userId}        );
         const createdAt = Date.now();
 
         if(! usercategory ){
             //user has not already categoryd
-            usercategory = await category.build(
+            usercategory = await Category.build(
                 {"commentId": commentId, "author": userId,  createdAt }
                 );
                 await usercategory.save();
@@ -49,7 +49,7 @@ router.post('/', [
 
         } else {
 
-            await category.findOneAndDelete({ "commentId": commentId, "author": userId});
+            await Category.findOneAndDelete({ "commentId": commentId, "author": userId});
             // user category needs to be modified
             return res.status( 204 ).send({ });
           
@@ -71,7 +71,7 @@ router.get('/', [
         const user = req.currentUser;
         const userId = req.currentUser!.id;
 
-        let usercategorys = await category.find({ "author": userId }        );
+        let usercategorys = await Category.find({ "author": userId }        );
 
         return res.status( 200 ).send({ categorys: usercategorys });
     }

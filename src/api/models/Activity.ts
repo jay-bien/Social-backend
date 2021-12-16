@@ -3,10 +3,11 @@ import { ObjectID } from "mongodb";
 
 
 export enum ActivityTypes {
-    Login,
-    Signup,
-    ViewedPage,
-    ViewedPost,
+    Login = "signin",
+    Signup ="signup",
+    Logout ='signout',
+    ViewedPage = "pageView",
+    ViewedPost ="postView",
 }
 
 interface ActivityAttrs {
@@ -64,11 +65,13 @@ const activitySchema = new mongoose.Schema({
     }
 })
 
+
 activitySchema.statics.build = ( attrs: ActivityAttrs ) => {
     return new Activity( attrs );
 }
 
 const Activity = mongoose.model< ActivityDoc, ActivityModel >('Activity', activitySchema)
+
 
 
 
