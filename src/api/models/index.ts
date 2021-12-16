@@ -7,3 +7,5 @@ export { Vote } from './Vote';
 export { Link } from './Link';
 export { Bookmark } from './Bookmark';
 export { Activity } from './Activity'
+
+export { Category } from './Category';
