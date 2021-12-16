@@ -9,3 +9,4 @@ export { Bookmark } from './Bookmark';
 export { Activity } from './Activity'
 
 export { Category } from './Category';
+export { Click } from './Click';
