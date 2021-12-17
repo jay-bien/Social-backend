@@ -116,12 +116,31 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
         const body = req.body;
 
 
-        console.log({ body });
+        
 
         let allComments = [];
 
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
+        let uuu = req.currentUser;
+        if( req.currentUser ){
+            // user exists hydrate with user sentiment;
+            const votes = await Vote.find({ author: req.currentUser.id });
+            let modComments = allComments.map( comment => {
 
+                for(let i = 0; i < votes.length; i++ ){
+                    if( ""+ votes[ i ].commentId === ""+ comment._id ){
+                        comment.sentiment = votes[ i ].direction;
+                        console.log('SENTIMENT', comment.sentiment );
+                    }
+                }
+                
+
+                console.log({ comment });
+                return comment;
+
+            })
+      
+        }
 
         
 

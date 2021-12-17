@@ -30,7 +30,8 @@ interface CommentDoc extends mongoose.Document{
     categories: string[],
     tags: string[],
     type: string,
-    created_at: number
+    created_at: number,
+    sentiment: string
 }
 
 interface CommentModel extends mongoose.Model< any >{

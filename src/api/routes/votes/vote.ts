@@ -50,6 +50,8 @@ router.post('/:commentId/:direction', [
     const commentIdParsed = mongoose.Types.ObjectId( commentId );
     const authorParsed = mongoose.Types.ObjectId( userId )
 
+    const createdAt = Date.now();
+
     // try to find if user has already voted 
 
 
@@ -59,8 +61,7 @@ router.post('/:commentId/:direction', [
 
         if(! userVote ){
             //user has not already voted
-            const createdAt = Date.now();
-            userVote = await Vote.build(
+            userVote = Vote.build(
                 {"commentId": commentIdParsed, "author": authorParsed, direction,  created_at: createdAt}
                 );
 
@@ -75,6 +76,7 @@ router.post('/:commentId/:direction', [
 
             
                 userVote.direction = "neutral";
+                userVote.createdAt = createdAt;
   
 
 
@@ -83,6 +85,8 @@ router.post('/:commentId/:direction', [
                 // user is not cancelling vote
                 // vote needs to switch directions not be cancelled
                 userVote.direction = direction;
+                userVote.createdAt = createdAt;
+
    
 
             }
@@ -103,6 +107,7 @@ router.post('/:commentId/:direction', [
         const response = {
             likes: likes.length,
             dislikes: dislikes.length,
+            sentiment: userVote.direction,
             commentId
         }
         console.log({ response });

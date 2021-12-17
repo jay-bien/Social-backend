@@ -26,21 +26,25 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
     const cookieHeaders = req.headers.cookie;
     let token = req.session?.jwt;
-    console.log( req.session?.jwt );
+    console.log('JWTEEEE:', req.session?.jwt );
 
 
         const jwtKey = process.env.JWT_KEY!;
-    
-        try{
+        if( token ){
+            try{
             
-            const payload =  jwt.verify( token, jwtKey) as UserPayload;
-            req.currentUser = payload;
-        } catch( e ){
-            // todo
-            console.log({ e });
-            req.currentUser = null;
-            console.log("Bad compare")
+                const payload =  jwt.verify( token, jwtKey) as UserPayload;
+                req.currentUser = payload;
+            } catch( e ){
+                // todo
+                console.log({ e });
+                req.currentUser = null;
+                console.log("Bad compare")
+            }
+
         }
+    
+
 
 
 
