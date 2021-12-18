@@ -1,7 +1,8 @@
 import express, { Request, response, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { currentUser }  from '../../middlewares';
+import { currentUser, requireAuth }  from '../../middlewares';
+import { Comment, Vote } from '../../models';
 
 const router = express.Router();
 
@@ -13,12 +14,40 @@ const router = express.Router();
 // @access private 
 router.get('/', currentUser, async ( req: Request, res: Response ) => {
 
-    console.log("User route")
 
-    console.log('USER', req.currentUser);
+    let currU = req.currentUser;
+
+    const upVotes = await Vote.countDocuments({
+        author: currU.id,
+        direction: "up"
+    });
+    const downVotes = await Vote.countDocuments({
+        author: currU.id,
+        direction: "down"
+    });
+    const posts = await Comment.countDocuments({
+        author: currU.id
+    })
+    const userO = {
+        ...currU,
+        upVotes,
+        downVotes,
+        posts
+    }
+    
+
+    return res.status( 200 ).send( { user : userO }  );
+
+});
+
+router.post('/', currentUser, requireAuth, async ( req: Request, res: Response ) => {
+
+
     const currU = req.currentUser;
-    if( ! currU ) return res.status( 400 ).send( { user: null } );
-    return res.status( 200 ).send( { user : currU } );
+    const body = req.body;
+    console.log({ body });
+
+    return res.status( 202 ).send( { user : currU } );
 
 })
 

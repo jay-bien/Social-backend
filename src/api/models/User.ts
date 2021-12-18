@@ -37,10 +37,15 @@ const userSchema = new mongoose.Schema({
     bio:{
         type: String,
     },
+    city:{
+        type: String
+    },
+    country:{
+        type: String
+    },
     given_name:{},
     family_name:{},
     preferred_name:{},
-    city:{},
     zip:{},
     photo:{},
     membership_active:{ },
