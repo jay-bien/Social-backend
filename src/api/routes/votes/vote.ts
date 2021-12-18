@@ -76,7 +76,7 @@ router.post('/:commentId/:direction', [
 
             
                 userVote.direction = "neutral";
-                userVote.createdAt = createdAt;
+                userVote.created_at = createdAt;
   
 
 
@@ -85,7 +85,7 @@ router.post('/:commentId/:direction', [
                 // user is not cancelling vote
                 // vote needs to switch directions not be cancelled
                 userVote.direction = direction;
-                userVote.createdAt = createdAt;
+                userVote.created_at = createdAt;
 
    
 

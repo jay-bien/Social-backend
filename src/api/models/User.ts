@@ -15,17 +15,27 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    genderID:{
+    gender_ID:{
         type: Number,
         required: false
     },
-    userName:{
+    username:{
         type: String,
         required: false
     },
-    lastActive:{
+    last_active:{
         type: Number,
         required: false
+    },
+    role: {
+        type: Array,
+        required: false
+    },
+    display_name:{
+        type: String,
+    },
+    bio:{
+        type: String,
     },
     given_name:{},
     family_name:{},
@@ -65,11 +75,18 @@ interface UserAttrs {
     email: string;
     password: string;
     created_at: number;
+    username: string
 }
 interface UserDoc extends mongoose.Document{
     email: string,
     password: string;
     created_at: number;
+    username: string;
+    bio: string;
+    last_active: Date;
+    display_name: string;
+    role: string[]
+
 }
 
 userSchema.statics.build = ( attrs: UserAttrs ) => {

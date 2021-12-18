@@ -4,6 +4,7 @@ import { BadRequest } from '../../errors';
 import { RequestValidationError } from '../../errors/request-validation';
 
 import { User } from '../../models';
+import genUsername from 'unique-username-generator';
 
 import jwt from 'jsonwebtoken';
 import { validateRequest } from '../../middlewares';
@@ -53,7 +54,11 @@ validateRequest,
     try{
 
     const created = Date.now();
-    const user = User.build( { email, password, created_at: created } );
+    const username = genUsername.generateFromEmail(
+        email,
+        3
+      );
+    const user = User.build( { email, password, created_at: created, username } );
     await user.save();
     const uJwt = jwt.sign({
         id: user.id,
