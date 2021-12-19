@@ -1,4 +1,6 @@
 import mongoose, { ObjectId } from 'mongoose';
+
+
 import { ObjectID } from "mongodb";
 
 interface CommentAttrs {
@@ -34,9 +36,9 @@ interface CommentDoc extends mongoose.Document{
     sentiment: string
 }
 
-interface CommentModel extends mongoose.Model< any >{
-
-    build( attrs: CommentAttrs ): CommentDoc
+export interface CommentModel extends mongoose.Model< any >{
+    build( attrs: CommentAttrs ): CommentDoc;
+    fuzzySearch( arg: String ): [];
 }
 
 const commentSchema = new mongoose.Schema({
@@ -104,8 +106,10 @@ commentSchema.statics.build = ( attrs: CommentAttrs ) => {
     return new Comment( attrs );
 }
 
-const Comment = mongoose.model< CommentDoc, CommentModel >('Comment', commentSchema)
 
+
+
+const Comment = mongoose.model< CommentDoc, CommentModel >('Comment', commentSchema);
 
 
 

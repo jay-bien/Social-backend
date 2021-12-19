@@ -47,6 +47,7 @@
     "metascraper-url": "^5.25.0",
     "metascraper-video": "^5.25.0",
     "mongoose": "^5.13.3",
+    "mongoose-fuzzy-searching": "^2.0.2",
     "oembed": "^0.1.2",
     "open-graph-scraper": "^4.10.0",
     "passport": "^0.4.1",

@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { BadRequest, NotAuthorizedError } from '../../errors';
 
-import { Comment } from '../../models';
+import { Comment, Search } from '../../models';
 import { unfurl } from 'unfurl.js';
 
 
@@ -30,15 +30,27 @@ router.post('/', currentUser,
 
 
     console.log("Post Request search route");
+    const { q } = req.body;
+
+    const createdAt = Date.now();
+
+        const regex = new RegExp( escapeRegex( q ), 'gi' );
+        const results = await Comment.find({ 
+            $or:[{ title: regex}, { content: regex }]
+        });
+        console.log({ results });
 
 
-    return res.status( 200 ).send({ data: null });
+    return res.status( 200 ).send({ data: results });
 
     
  
     
 })
 
+function escapeRegex(text: string) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 // @route 
 // @desc 
