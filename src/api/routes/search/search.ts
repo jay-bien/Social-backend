@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { BadRequest, NotAuthorizedError } from '../../errors';
 
-import { Comment, Search } from '../../models';
+import { Comment, Link, Search } from '../../models';
 import { unfurl } from 'unfurl.js';
 
 
@@ -28,23 +28,33 @@ router.delete('/',
 router.post('/', currentUser,
  async ( req: Request, res: Response ) => {
 
-
-    console.log("Post Request search route");
     const { q } = req.body;
+    if( !q ) return res.status( 200 ).send({ });
 
     const createdAt = Date.now();
 
         const regex = new RegExp( escapeRegex( q ), 'gi' );
-        const results = await Comment.find({ 
-            $or:[{ title: regex}, { content: regex }]
-        });
-        console.log({ results });
 
-
-    return res.status( 200 ).send({ data: results });
-
+        try{
+            const results = await Comment.find({ 
+                $or:[{ title: regex}, { content: regex }, {}]
+            });
     
- 
+            const search = Search.build({
+               author: req.currentUser?.id,
+               query: q,
+               created_at: createdAt
+            });
+            await search.save();
+    
+    
+        return res.status( 200 ).send({ data: results });
+
+        } catch( e ){
+            console.log({ e });
+            return res.status( 200 ).send({ errors: [ e ] });
+        }
+
     
 })
 
@@ -59,7 +69,13 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
  
 
         
-
+    try{
+        const searches = await Search.find({ });
+        return res.status( 200 ).send({ searches });
+    } catch( e ){
+        console.log( { e });
+        return res.status( 500 ).send({ errors: [ e ]});
+    }
 
     res.status(200).send({})
     return;

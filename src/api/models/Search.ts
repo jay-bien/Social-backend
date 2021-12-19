@@ -2,7 +2,7 @@ import mongoose, { ObjectId } from 'mongoose';
 import { ObjectID } from "mongodb";
 
 interface SearchAttrs {
-    author: ObjectID,
+    author: string,
     created_at: number,
     query: string
 }
