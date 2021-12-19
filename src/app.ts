@@ -22,7 +22,8 @@ import { Signin,
          Posts,
          Votes,
          History,
-         Bookmark
+         Bookmark,
+         Search
         } 
         from './api/routes';
 
@@ -69,6 +70,8 @@ app.use( PATHS.link, LinkPost );
 app.use( PATHS.votes , Votes );
 app.use( PATHS.history , History );
 app.use( PATHS.bookmark, Bookmark );
+app.use( PATHS.search, Search );
+
 
 
 app.all( '*', ()=>{

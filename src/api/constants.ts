@@ -10,7 +10,8 @@ const   PATHS = {
     posts: "/post",
     votes: "/vote",
     history: "/history",
-    bookmark: '/bookmark'
+    bookmark: '/bookmark',
+    search: "/search"
 } 
 
 export {

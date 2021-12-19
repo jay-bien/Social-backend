@@ -29,7 +29,7 @@ router.post('/', currentUser,
  async ( req: Request, res: Response ) => {
 
 
-
+    console.log("Post Request search route");
 
 
     return res.status( 200 ).send({ data: null });
