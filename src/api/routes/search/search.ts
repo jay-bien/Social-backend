@@ -28,10 +28,8 @@ router.delete('/',
 router.get('/', currentUser, requireAuth,
  async ( req: Request, res: Response ) => {
 
-    console.log( req.body );
     const { q } = req.body;
-    console.log({ q });
-    console.log("query", q);
+  
 
     const createdAt = Date.now();
 
@@ -39,15 +37,15 @@ router.get('/', currentUser, requireAuth,
         console.log({ regex });
         try{
             const results = await Comment.find({ 
-                $or:[{ title: regex}, { content: regex }, {}]
+                $or:[{ title: regex}, { content: regex }]
             });
     
-            // const search = Search.build({
-            //    author: req.currentUser?.id || 'anonymous',
-            //    query: q,
-            //    created_at: createdAt
-            // });
-            // await search.save();
+            const search = Search.build({
+               author: req.currentUser?.id || 'anonymous',
+               query: q,
+               created_at: createdAt
+            });
+            await search.save();
 
             console.log( req.currentUser)
     
