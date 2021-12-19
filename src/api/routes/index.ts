@@ -8,3 +8,4 @@ export { default as Votes } from './votes/vote';
 
 export { default as History } from './history/history';
 export { default as Bookmark } from './bookmark/bookmark';
+export { default as Search } from './search/search';
