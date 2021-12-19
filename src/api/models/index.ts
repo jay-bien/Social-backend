@@ -10,3 +10,5 @@ export { Activity } from './Activity'
 
 export { Category } from './Category';
 export { Click } from './Click';
+
+export { Search } from './Search';
