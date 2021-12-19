@@ -26,7 +26,6 @@ export const currentUser = async ( req: Request, res: Response, next: NextFuncti
 
     const cookieHeaders = req.headers.cookie;
     let token = req.session?.jwt;
-    console.log('JWTEEEE:', req.session?.jwt );
 
 
         const jwtKey = process.env.JWT_KEY!;

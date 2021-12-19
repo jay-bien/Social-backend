@@ -12,7 +12,7 @@ const router = express.Router();
 // @route /auth/currentUser
 // @desc get current logged in user info from jwt
 // @access private 
-router.get('/', currentUser, async ( req: Request, res: Response ) => {
+router.get('/', currentUser, requireAuth, async ( req: Request, res: Response ) => {
 
 
     let currU = req.currentUser;

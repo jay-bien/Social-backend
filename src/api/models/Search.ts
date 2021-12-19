@@ -9,7 +9,7 @@ interface SearchAttrs {
 
 
 interface SearchDoc extends mongoose.Document{
-    author: ObjectID,
+    author: ObjectID | null,
     created_at: string,
     query: string
 }
@@ -23,7 +23,7 @@ const searchSchema = new mongoose.Schema({
 
     author:{
         type: ObjectID,
-        required: true,
+        required: false,
         ref: "User"
     },
     created_at:{

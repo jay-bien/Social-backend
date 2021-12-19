@@ -7,7 +7,7 @@ import { unfurl } from 'unfurl.js';
 
 
 import jwt from 'jsonwebtoken';
-import { currentUser } from '../../middlewares';
+import { currentUser, requireAuth } from '../../middlewares';
 
 const router = express.Router();
 
@@ -25,27 +25,31 @@ router.delete('/',
 });
 
 
-router.post('/', currentUser,
+router.get('/', currentUser, requireAuth,
  async ( req: Request, res: Response ) => {
 
+    console.log( req.body );
     const { q } = req.body;
-    if( !q ) return res.status( 200 ).send({ });
+    console.log({ q });
+    console.log("query", q);
 
     const createdAt = Date.now();
 
         const regex = new RegExp( escapeRegex( q ), 'gi' );
-
+        console.log({ regex });
         try{
             const results = await Comment.find({ 
                 $or:[{ title: regex}, { content: regex }, {}]
             });
     
-            const search = Search.build({
-               author: req.currentUser?.id,
-               query: q,
-               created_at: createdAt
-            });
-            await search.save();
+            // const search = Search.build({
+            //    author: req.currentUser?.id || 'anonymous',
+            //    query: q,
+            //    created_at: createdAt
+            // });
+            // await search.save();
+
+            console.log( req.currentUser)
     
     
         return res.status( 200 ).send({ data: results });
@@ -65,10 +69,8 @@ function escapeRegex(text: string) {
 // @route 
 // @desc 
 // @access 
-router.get('/', currentUser, async ( req: Request, res: Response ) => {
+router.get('/all', currentUser, async ( req: Request, res: Response ) => {
  
-
-        
     try{
         const searches = await Search.find({ });
         return res.status( 200 ).send({ searches });
