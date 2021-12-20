@@ -36,7 +36,7 @@ router.get('/', currentUser, requireAuth, async ( req: Request, res: Response ) 
     }
     
 
-    return res.status( 200 ).send( { user : userO }  );
+    return res.status( 200 ).send( { userO }  );
 
 });
 

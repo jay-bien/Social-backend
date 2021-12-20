@@ -23,7 +23,8 @@ import { Signin,
          Votes,
          History,
          Bookmark,
-         Search
+         Search,
+         Users
         } 
         from './api/routes';
 
@@ -71,6 +72,7 @@ app.use( PATHS.votes , Votes );
 app.use( PATHS.history , History );
 app.use( PATHS.bookmark, Bookmark );
 app.use( PATHS.search, Search );
+app.use( PATHS.users, Users );
 
 
 

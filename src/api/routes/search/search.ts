@@ -19,7 +19,8 @@ const router = express.Router();
 // development only
 router.delete('/', 
     async ( req: Request, res: Response ) => {
-
+    
+        await Search.deleteMany({});
 
     return res.status( 200 ).send({ })
 });
@@ -41,13 +42,12 @@ router.get('/', currentUser, requireAuth,
             });
     
             const search = Search.build({
-               author: req.currentUser?.id || 'anonymous',
+               author: req.currentUser.id,
                query: q,
                created_at: createdAt
             });
             await search.save();
 
-            console.log( req.currentUser)
     
     
         return res.status( 200 ).send({ data: results });
@@ -56,8 +56,6 @@ router.get('/', currentUser, requireAuth,
             console.log({ e });
             return res.status( 200 ).send({ errors: [ e ] });
         }
-
-    
 })
 
 function escapeRegex(text: string) {
@@ -67,17 +65,17 @@ function escapeRegex(text: string) {
 // @route 
 // @desc 
 // @access 
-router.get('/all', currentUser, async ( req: Request, res: Response ) => {
+router.get('/history', currentUser, async ( req: Request, res: Response ) => {
  
     try{
-        const searches = await Search.find({ });
+        const id = req.currentUser.id;
+        const searches = await Search.find({author: id }).sort({ created_at: -1 });
         return res.status( 200 ).send({ searches });
     } catch( e ){
         console.log( { e });
         return res.status( 500 ).send({ errors: [ e ]});
     }
 
-    res.status(200).send({})
     return;
 })
 

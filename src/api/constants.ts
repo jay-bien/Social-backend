@@ -11,7 +11,8 @@ const   PATHS = {
     votes: "/vote",
     history: "/history",
     bookmark: '/bookmark',
-    search: "/search"
+    search: "/search",
+    users: "/users"
 } 
 
 export {
