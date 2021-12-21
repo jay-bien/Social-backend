@@ -1,19 +1,12 @@
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
-import { BadRequest, NotAuthorizedError } from '../../errors';
 
 import { Comment, Link, Search } from '../../models';
-import { unfurl } from 'unfurl.js';
 
 
-import jwt from 'jsonwebtoken';
 import { currentUser, requireAuth } from '../../middlewares';
 
 const router = express.Router();
 
-// @route POST 
-// @desc sign up a user
-// @access public
 
 
 // development only
@@ -31,10 +24,6 @@ router.get('/', currentUser, requireAuth,
 
     const { q } = req.body;
 
-    console.log({
-        q
-    })
-  
 
     const createdAt = Date.now();
 
@@ -92,17 +81,17 @@ router.get('/:id', async ( req: Request, res: Response ) => {
     return;
 });
 
-router.get('/all', async ( req: Request, res: Response ) => {
+router.get('/all', [
+    currentUser, requireAuth
+], async ( req: Request, res: Response ) => {
 
+
+    //requireAdmin middleware
 
     console.log("Get all searches.")
 
     try{
         const searches = await Search.find();
-        console.log({
-            searches
-        })
-        
         
         return res.status( 200 ).send( searches );
 
@@ -113,9 +102,6 @@ router.get('/all', async ( req: Request, res: Response ) => {
     return;
 })
 
-router.delete("/:search_id", async ( req: Request, res: Response ) => {
-    
- 
-})
+
 
 export default router;

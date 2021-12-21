@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { NotAuthorizedError } from '../errors/not-authorized';
+import { } from '../middlewares/'
 
 
 /*
@@ -12,11 +13,15 @@ export const requireAuth = async (
     req: Request, 
     res: Response, 
     next: NextFunction 
-    ) => {
+    ) => {``
     if( !req.currentUser ){
         console.log("No user");
         throw new NotAuthorizedError();
     }
+
+
+    const userId = req.currentUser?.id;
+
 
     next();
 }

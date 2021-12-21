@@ -120,7 +120,7 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
         let uuu = req.currentUser;
         if( req.currentUser ){
-            // user exists hydrate with user sentiment;
+
             const votes = await Vote.find({ author: req.currentUser.id });
             let modComments = allComments.map( comment => {
 

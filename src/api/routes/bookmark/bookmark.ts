@@ -25,15 +25,10 @@ router.post('/:commentId', [
 ],
     async ( req: Request, res: Response ) => {
         
-
-
     const user = req.currentUser;
 
     const commentId = req.params.commentId;
     const userId = req.currentUser!.id;
-
-    // try to find if user has already bookmarkd 
-
 
     try{
         let userBookmark = await Bookmark.findOne({ "commentId": commentId, "author": userId}        );

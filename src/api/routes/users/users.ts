@@ -61,11 +61,10 @@ router.delete(  '/:id', async ( req:Request, res:Response) => {
         return res.status( 202 ).send( deleteOperation )
     } catch( e ){
 
+        console.log({ e});
+        return res.status( 500 ).send({})
+
     }
-
-    console.log({ id })
-
-    return res.status( 200).send("Delete user route")
 })
 
 export default router;
