@@ -30,6 +30,10 @@ router.get('/', currentUser, requireAuth,
  async ( req: Request, res: Response ) => {
 
     const { q } = req.body;
+
+    console.log({
+        q
+    })
   
 
     const createdAt = Date.now();

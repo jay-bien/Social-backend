@@ -61,11 +61,9 @@ validateRequest,
 
     if( link ) {    
         const unfurlResult = await unfurl( link );
-        console.log( unfurlResult );
         const linkDoc = Link.build({ url: link, metadata: unfurlResult, created_at: createdAt });
         await linkDoc.save();
         linkId = linkDoc._id;
-        console.log({ linkDoc });
     }
     
 
@@ -92,7 +90,6 @@ validateRequest,
         } );
 
         await commentDoc.save();
-        console.log({ commentDoc });
         return res.status( 200 ).send({ data: commentDoc });
 
     } catch( e ){
@@ -145,10 +142,9 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
 
     } catch( e ){
         console.log({ e });
+        return res.status( 500 ).send({  errors: [{msg:"An error has occurred"}]});
     }
 
-    res.status(200).send({})
-    return;
 })
 
 // @route 
@@ -159,7 +155,6 @@ router.get('/:id', async ( req: Request, res: Response ) => {
   
         const id = req.params.id;
          const comment = await Comment.findById( id ).populate('link');
-        console.log({ comment });
         
 
         return res.status(200).send({ comment });
@@ -174,14 +169,11 @@ router.get('/:id', async ( req: Request, res: Response ) => {
 
 router.delete("/:comment_id", async ( req: Request, res: Response ) => {
 
-    console.log("Delete comment ");
     
     try{
         const id = req.params.comment_id;
-        console.log({ id });
         const del = await Comment.findByIdAndRemove( id );
 
-        console.log({ del  });
         return res.status( 200 ).send( del );
     } catch( e ){
         console.log({ e});

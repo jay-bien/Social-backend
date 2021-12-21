@@ -32,7 +32,6 @@ validateRequest,
  async ( req: Request, res: Response ) => {
 
 
-
     const { email, password, password2 } = req.body;
 
     if('' + password.trim() !== '' + password2.trim() ){
@@ -52,11 +51,7 @@ validateRequest,
     }
 
     try{
-
-
-        console.log({
-            email
-        })
+    console.log(" Create user");
     const created = Date.now();
     const username = generateName();
 

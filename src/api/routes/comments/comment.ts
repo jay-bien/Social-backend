@@ -126,12 +126,10 @@ router.get('/:parent_id', async ( req: Request, res: Response ) => {
     try{
   
         const parentId = req.params.parent_id;
-        console.log({ parentId });
 
         if( !parentId ) return res.status( 400 ).send({});
 
-         const comments = await NestedComment.find( { parentId: parentId } ).populate("author", "email username")
-        console.log({ comments });
+         const comments = await NestedComment.find( { parentId: parentId } ).populate("author", "email username").sort({ created_at: -1})
         
 
         return res.status(200).send({ comments });
@@ -144,8 +142,6 @@ router.get('/:parent_id', async ( req: Request, res: Response ) => {
 })
 
 router.delete("/:comment_id", async ( req: Request, res: Response ) => {
-
-    console.log("Delete comment ");
     
     try{
         const id = req.params.comment_id;
