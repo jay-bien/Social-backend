@@ -130,7 +130,7 @@ router.get('/:parent_id', async ( req: Request, res: Response ) => {
 
         if( !parentId ) return res.status( 400 ).send({});
 
-         const comments = await NestedComment.find( { parentId: parentId } ).populate("author");
+         const comments = await NestedComment.find( { parentId: parentId } ).populate("author", "email username")
         console.log({ comments });
         
 
