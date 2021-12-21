@@ -11,3 +11,4 @@ export { Category } from './Category';
 export { Click } from './Click';
 
 export { Search } from './Search';
+export { NestedComment } from './NestedComment';

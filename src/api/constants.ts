@@ -8,6 +8,7 @@ const   PATHS = {
     tickets: "/tickets",
     link: "/link",
     posts: "/post",
+    comments: '/comment',
     votes: "/vote",
     history: "/history",
     bookmark: '/bookmark',

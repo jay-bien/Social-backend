@@ -24,7 +24,8 @@ import { Signin,
          History,
          Bookmark,
          Search,
-         Users
+         Users,
+         Comments
         } 
         from './api/routes';
 
@@ -67,6 +68,7 @@ app.use( PATHS.signout, Signout );
 app.use( PATHS.signup, Signup );
 app.use(  PATHS.currentUser , CurrentUser );
 app.use( PATHS.posts, Posts );
+app.use( PATHS.comments, Comments );
 app.use( PATHS.link, LinkPost );
 app.use( PATHS.votes , Votes );
 app.use( PATHS.history , History );
