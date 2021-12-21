@@ -44,7 +44,8 @@ export interface CommentModel extends mongoose.Model< any >{
 const commentSchema = new mongoose.Schema({
     author:{
         type: String,
-        required: false
+        required: false,
+        ref: "User"
     },
     title:{
         type: String,

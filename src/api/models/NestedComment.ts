@@ -33,7 +33,8 @@ export interface NestedCommentModel extends mongoose.Model< any >{
 const nestedCommentSchema = new mongoose.Schema({
     author:{
         type: String,
-        required: false
+        required: false,
+        ref: "User"
     },
     content: {
         type: String,

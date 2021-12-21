@@ -39,7 +39,12 @@ router.post('/', currentUser, [
         .trim()
         .not()
         .isEmpty()
-        .withMessage("Root Id is required.")
+        .withMessage("Root Id is required."),
+    body( 'parentId' )
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Parent Id is required.")
 ], 
 validateRequest,
  async ( req: Request, res: Response ) => {
@@ -66,8 +71,8 @@ validateRequest,
         const commentDoc = NestedComment.build( { 
              content,
               author: userId,
-              parentId:"",
-               rootId:"",
+              parentId: parentId,
+               rootId: rootId,
                 likes:0,
                  dislikes: 0,
                  created_at: createdAt,
@@ -121,10 +126,11 @@ router.get('/:parent_id', async ( req: Request, res: Response ) => {
     try{
   
         const parentId = req.params.parent_id;
+        console.log({ parentId });
 
         if( !parentId ) return res.status( 400 ).send({});
 
-         const comments = await NestedComment.find( { parent_id: parentId } );
+         const comments = await NestedComment.find( { parentId: parentId } ).populate("author");
         console.log({ comments });
         
 
