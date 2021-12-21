@@ -57,10 +57,8 @@ router.delete(  '/:id', async ( req:Request, res:Response) => {
         const deleteOperation = await User.deleteOne({
             _id: id 
         });
-        console.log({
-            deleteOperation
-        });
-        return res.status( 200 ).send({ deleteOperation })
+
+        return res.status( 202 ).send( deleteOperation )
     } catch( e ){
 
     }

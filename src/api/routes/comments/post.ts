@@ -130,12 +130,9 @@ router.get('/', currentUser, async ( req: Request, res: Response ) => {
                 for(let i = 0; i < votes.length; i++ ){
                     if( ""+ votes[ i ].commentId === ""+ comment._id ){
                         comment.sentiment = votes[ i ].direction;
-                        console.log('SENTIMENT', comment.sentiment );
                     }
                 }
                 
-
-                console.log({ comment });
                 return comment;
 
             })
@@ -176,16 +173,19 @@ router.get('/:id', async ( req: Request, res: Response ) => {
 })
 
 router.delete("/:comment_id", async ( req: Request, res: Response ) => {
+
+    console.log("Delete comment ");
     
     try{
         const id = req.params.comment_id;
         console.log({ id });
-        await Comment.findByIdAndRemove( id );
+        const del = await Comment.findByIdAndRemove( id );
 
-        return res.status( 200 ).send({})
+        console.log({ del  });
+        return res.status( 200 ).send( del );
     } catch( e ){
         console.log({ e});
-        return res.status( 500 ).send({e})
+        return res.status( 500 ).send({ errors:[ e ]})
 
     }
 })

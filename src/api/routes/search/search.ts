@@ -83,7 +83,28 @@ router.get('/history', currentUser, async ( req: Request, res: Response ) => {
 // @desc 
 // @access 
 router.get('/:id', async ( req: Request, res: Response ) => {
-   
+    
+    res.status(200).send({})
+    return;
+});
+
+router.get('/all', async ( req: Request, res: Response ) => {
+
+
+    console.log("Get all searches.")
+
+    try{
+        const searches = await Search.find();
+        console.log({
+            searches
+        })
+        
+        
+        return res.status( 200 ).send( searches );
+
+    } catch( e ){
+        res.status( 500 ).send({ errors:[ e ]});
+    }
     res.status(200).send({})
     return;
 })
