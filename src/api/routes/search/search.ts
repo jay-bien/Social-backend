@@ -13,9 +13,36 @@ const router = express.Router();
 router.delete('/', 
     async ( req: Request, res: Response ) => {
     
-        await Search.deleteMany({});
 
-    return res.status( 200 ).send({ })
+        try{
+            await Search.deleteMany({});
+            return res.status( 200 ).send({ })
+
+        } catch( e ){
+            console.log( e );
+            return res.status( 500 ).send({ })
+
+        }
+
+});
+
+router.delete('/:id', 
+    async ( req: Request, res: Response ) => {
+
+
+        const id = req.params.id;
+        if( !id ) return res.status( 400 ).send({ });
+        try{
+
+            await Search.findByIdAndDelete( id );
+            return res.status( 200 ).send({ })
+
+
+        } catch( e ){
+            console.log({ e });
+            return res.status( 500 ).send({ });
+        }
+
 });
 
 
