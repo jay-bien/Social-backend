@@ -15,8 +15,8 @@ const start = async ( ) => {
 
    } catch( e ){
        console.log({ e });
+       console.log("Unable to connect to database.");
         throw new DatabaseConnectionError("Cannot connect to databse.")
-        console.log("Unable to connect to database.");
    }
 
 }
