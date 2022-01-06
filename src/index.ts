@@ -13,6 +13,8 @@ import { DatabaseConnectionError } from './api/errors';
 
 
 if( ! process.env.JWT_KEY)  throw new DatabaseConnectionError( 'Error starting app.' );
+
+
 mongoStart();
 app.listen( PORT , ( ) => {
     console.log( ` app listening on ${PORT}.`);

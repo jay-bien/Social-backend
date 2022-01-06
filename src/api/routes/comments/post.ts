@@ -18,14 +18,14 @@ const router = express.Router();
 
 
 // development only
-router.delete('/', 
-    async ( req: Request, res: Response ) => {
+router.delete('/',
+    async (req: Request, res: Response) => {
 
-    await Comment.deleteMany({});
+        await Comment.deleteMany({});
 
-    const comments = await Comment.find({});
-    return res.status( 200 ).send({ comments })
-});
+        const comments = await Comment.find({});
+        return res.status(200).send({ comments })
+    });
 
 
 router.post('/', currentUser, [
@@ -35,131 +35,158 @@ router.post('/', currentUser, [
         .not()
         .isEmpty()
         .withMessage('title is invalid'),
-    body( 'content' )
+    body('content')
         .trim()
-], 
-validateRequest,
- async ( req: Request, res: Response ) => {
+],
+    validateRequest,
+    async (req: Request, res: Response) => {
 
 
 
-    const { title, link, content, type, categories, tags } = req.body;
+        const { title, link, content, type, categories, tags } = req.body;
 
-    const user = req.currentUser;
-    const userId = user?.id;
+        const user = req.currentUser;
+        const userId = user?.id;
 
-    if(! userId ){
-        throw new NotAuthorizedError()
-    }
-    
-    const createdAt = Date.now();
-    let linkId = null;
+        if (!userId) {
+            throw new NotAuthorizedError()
+        }
 
-    if( type === "text"){
+        const createdAt = Date.now();
+        let linkId = null;
 
-    } else if( type ==="link"){
+        if (type === "text") {
 
-    if( link ) {    
-        const unfurlResult = await unfurl( link );
-        const linkDoc = Link.build({ url: link, metadata: unfurlResult, created_at: createdAt });
-        await linkDoc.save();
-        linkId = linkDoc._id;
-    }
-    
+        } else if (type === "link") {
 
-    } else if( type === "qa"){
-
-    }
+            if (link) {
+                const unfurlResult = await unfurl(link);
+                const linkDoc = Link.build({ url: link, metadata: unfurlResult, created_at: createdAt });
+                await linkDoc.save();
+                linkId = linkDoc._id;
+            }
 
 
+        } else if (type === "qa") {
 
-    try{
-        const commentDoc = Comment.build( { 
-            title,
-             link: linkId, 
-             content,
-              author: userId,
-              parentId:"",
-               rootId:"",
-                likes:0,
-                 dislikes: 0,
-                 categories,
-                 tags,
-                 type,
-                 created_at: createdAt,
-        } );
-
-        await commentDoc.save();
-        return res.status( 200 ).send({ data: commentDoc });
-
-    } catch( e ){
-        console.log({ e });
-    }
+        }
 
 
-    return res.status( 200 ).send({ data: null });
 
-    
- 
-    
-})
+        try {
+            const commentDoc = Comment.build({
+                title,
+                link: linkId,
+                content,
+                author: userId,
+                parentId: "",
+                rootId: "",
+                likes: 0,
+                dislikes: 0,
+                categories,
+                tags,
+                type,
+                created_at: createdAt,
+            });
+
+            await commentDoc.save();
+            return res.status(200).send({ data: commentDoc });
+
+        } catch (e) {
+            console.log({ e });
+        }
+
+
+        return res.status(200).send({ data: null });
+
+
+
+
+    })
 
 
 // @route 
 // @desc 
 // @access 
-router.get('/', currentUser, async ( req: Request, res: Response ) => {
-    try{
+router.get('/', currentUser, async (req: Request, res: Response) => {
+    try {
         const body = req.body;
 
 
-        
+
 
         let allComments = [];
 
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
+        let aggComments = await Comment.aggregate([
+            {
+                $lookup: {
+                    from: "vote",
+                    localField: '_id',
+                    foreignField: 'commentId',
+                    as: "votesTest"
+                }
+            },
+            {
+                $addFields: {
+                    currentAuth: "$author",
+                    sentiment: { $add: [1, 3] },
+                    likess: 10
+                },
+            },
+        ]);
+
+        let allVotes = await Vote.find({});
+        console.log({ aggComments });
+        //   console.log({ allVotes });
+        return res.status(200).send({ comments: aggComments });
+
+
+
         let uuu = req.currentUser;
-        if( req.currentUser ){
+        if (req.currentUser) {
 
             const votes = await Vote.find({ author: req.currentUser.id });
-            let modComments = allComments.map( comment => {
+            let modComments = allComments.map(comment => {
 
-                for(let i = 0; i < votes.length; i++ ){
-                    if( ""+ votes[ i ].commentId === ""+ comment._id ){
-                        comment.sentiment = votes[ i ].direction;
+                for (let i = 0; i < votes.length; i++) {
+                    if ("" + votes[i].commentId === "" + comment._id) {
+                        comment.sentiment = votes[i].direction;
                     }
                 }
-                
+
                 return comment;
 
             })
-      
+
         }
 
-        
 
-        return res.status(200).send({ comments: allComments});
 
-    } catch( e ){
+        return res.status(200).send({ comments: allComments });
+
+    } catch (e) {
         console.log({ e });
-        return res.status( 500 ).send({  errors: [{msg:"An error has occurred"}]});
+        return res.status(500).send({ errors: [{ msg: "An error has occurred" }] });
     }
+
+
 
 })
 
 // @route 
 // @desc 
 // @access 
-router.get('/:id', async ( req: Request, res: Response ) => {
-    try{
-  
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+
         const id = req.params.id;
-         const comment = await Comment.findById( id ).populate('link');
-        
+        const comment = await Comment.findById(id).populate('link');
+
 
         return res.status(200).send({ comment });
 
-    } catch( e ){
+    } catch (e) {
         console.log({ e });
     }
 
@@ -167,19 +194,24 @@ router.get('/:id', async ( req: Request, res: Response ) => {
     return;
 })
 
-router.delete("/:comment_id", async ( req: Request, res: Response ) => {
+router.delete("/:comment_id", async (req: Request, res: Response) => {
 
-    
-    try{
+
+    try {
         const id = req.params.comment_id;
-        const del = await Comment.findByIdAndRemove( id );
+        const del = await Comment.findByIdAndRemove(id);
 
-        return res.status( 200 ).send( del );
-    } catch( e ){
-        console.log({ e});
-        return res.status( 500 ).send({ errors:[ e ]})
+        return res.status(200).send(del);
+    } catch (e) {
+        console.log({ e });
+        return res.status(500).send({ errors: [e] })
 
     }
+})
+
+router.put("/", async (req: Request, res: Response) => {
+
+    return res.status(200).send({});
 })
 
 export default router;

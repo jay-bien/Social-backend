@@ -9,14 +9,14 @@ const router = express.Router();
 
 
 // development only
-router.delete('/', 
-    async ( req: Request, res: Response ) => {
+// router.delete('/', 
+//     async ( req: Request, res: Response ) => {
 
-    await Category.deleteMany({});
+//     await Category.deleteMany({});
 
-    const categorys = await Category.find({});
-    return res.status( 200 ).send({categorys})
-});
+//     const categorys = await Category.find({});
+//     return res.status( 200 ).send({categorys})
+// });
 
 
 
@@ -32,8 +32,7 @@ router.post('/', [
     const commentId = req.params.commentId;
     const userId = req.currentUser!.id;
 
-    // try to find if user has already categoryd 
-
+    // try to find if user has already categoryd
 
     try{
         let usercategory = await Category.findOne({ "commentId": commentId, "author": userId}        );

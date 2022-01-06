@@ -49,7 +49,7 @@ router.post('/', [
     req.session = {
         jwt: uJwt
     };
-    
+
 
     console.log("Session jwt from signing in.");
     console.log( req.session.jwt );

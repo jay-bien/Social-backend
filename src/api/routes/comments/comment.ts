@@ -28,7 +28,7 @@ router.delete('/',
 });
 
 
-router.post('/', currentUser, [
+router.post('/', currentUser, requireAuth, [
 
     body('content').
         trim()
@@ -79,7 +79,6 @@ validateRequest,
         } );
 
         await commentDoc.save();
-        console.log({ commentDoc });
         return res.status( 200 ).send({ data: commentDoc });
 
     } catch( e ){

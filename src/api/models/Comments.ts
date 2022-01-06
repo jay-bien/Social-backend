@@ -38,7 +38,6 @@ interface CommentDoc extends mongoose.Document{
 
 export interface CommentModel extends mongoose.Model< any >{
     build( attrs: CommentAttrs ): CommentDoc;
-    fuzzySearch( arg: String ): [];
 }
 
 const commentSchema = new mongoose.Schema({

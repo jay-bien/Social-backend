@@ -27,7 +27,6 @@ interface NestedCommentDoc extends mongoose.Document{
 
 export interface NestedCommentModel extends mongoose.Model< any >{
     build( attrs: CommentAttrs ): NestedCommentDoc;
-    fuzzySearch( arg: String ): [];
 }
 
 const nestedCommentSchema = new mongoose.Schema({

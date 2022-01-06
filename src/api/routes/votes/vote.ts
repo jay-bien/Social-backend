@@ -27,7 +27,8 @@ router.get('/', [
 
     try{
         const id = req.currentUser.id;
-        const userVotes = await Vote.find({ author: id});
+        // const userVotes = await Vote.find({ author: id});
+        const userVotes = await Vote.find();
         return res.status( 200 ).send(userVotes);
 
     } catch( e ){
@@ -93,7 +94,6 @@ router.post('/:commentId/:direction', [
         }
 
         await userVote.save();
-        console.log({ comment });
 
         const likes = await Vote.find({ commentId, direction:"up" });
         const dislikes = await Vote.find({ commentId, direction:"down"});
@@ -110,7 +110,6 @@ router.post('/:commentId/:direction', [
             sentiment: userVote.direction,
             commentId
         }
-        console.log({ response });
 
         return res.status( 200 ).send( response );
 

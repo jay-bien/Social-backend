@@ -10,14 +10,14 @@ const router = express.Router();
 
 
 // development only
-router.delete('/', 
-    async ( req: Request, res: Response ) => {
+// router.delete('/', 
+//     async ( req: Request, res: Response ) => {
 
-    await Click.deleteMany({});
+//     await Click.deleteMany({});
 
-    const clicks = await Click.find({});
-    return res.status( 200 ).send({clicks})
-});
+//     const clicks = await Click.find({});
+//     return res.status( 200 ).send({clicks})
+// });
 
 
 
@@ -32,8 +32,6 @@ router.post('/:commentId', [
 
     const commentId = req.params.commentId;
     const userId = req.currentUser!.id;
-
-    // try to find if user has already clickd 
 
 
     try{
