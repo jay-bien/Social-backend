@@ -1,5 +1,4 @@
 import express, {Request, Response } from 'express';
-import ogs from 'open-graph-scraper';
 import { unfurl } from 'unfurl.js';
 
 
@@ -9,7 +8,6 @@ const router = express.Router();
 
 
 router.post('/', async ( req: Request, res: Response) => {
-    console.log(req.body);
     const url = req.body.url;
   
     if(url){
@@ -20,11 +18,7 @@ router.post('/', async ( req: Request, res: Response) => {
   
     try{
 
-
       const response = await unfurl( url );
-      
-
-
 
       return res.status( 200 ).send({
         data: response
@@ -41,17 +35,6 @@ router.post('/', async ( req: Request, res: Response) => {
 
 
 
-async function getOpenGraph( url: string ): Promise<{}> {
-    return new Promise( (resolve, reject) => {
-      ogs({ url: url }, ( err, results, response ) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-  };
   
   
   
