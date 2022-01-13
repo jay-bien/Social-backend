@@ -128,7 +128,42 @@ router.get('/:parent_id', async ( req: Request, res: Response ) => {
 
         if( !parentId ) return res.status( 400 ).send({});
 
-         const comments = await NestedComment.find( { parentId: parentId } ).populate("author", "email username").sort({ created_at: -1})
+         const comments = await NestedComment.find( { parentId: parentId } ).populate("author", "email username").sort({ created_at: -1});
+
+         const aggComments = NestedComment.aggregate([
+            {
+                "$lookup" : {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "userR"
+                }
+            },
+            {
+                "$lookup" : {
+                    from: "votes",
+                    localField: "author",
+                    foreignField: "author",
+                    as: "userLikes"
+                }
+            },
+            {
+                "$lookup" : {
+                    from: "vote",
+                    localField: "author",
+                    foreignField: "author",
+                    as: "userVotes"
+                }
+            },
+        
+            {
+                $addFields: {
+                    currentAuth: "$author",
+        
+                },
+            },
+        ]);
+        
         
 
         return res.status(200).send({ comments });

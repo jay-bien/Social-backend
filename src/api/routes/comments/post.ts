@@ -6,8 +6,7 @@ import { RequestValidationError } from '../../errors/request-validation';
 import { Comment, Link, Vote } from '../../models';
 import { unfurl } from 'unfurl.js';
 
-import { start as mongoStart } from '../../db/mongo';
-
+import mongoose from 'mongoose';
 
 import jwt from 'jsonwebtoken';
 import { currentUser, requireAuth, validateRequest } from '../../middlewares';
@@ -111,8 +110,6 @@ router.post('/', currentUser, [
 // @desc 
 // @access 
 router.get('/', currentUser, async (req: Request, res: Response) => {
-
-    const client = await mongoStart();
 
     try {
         const body = req.body;
