@@ -6,6 +6,8 @@ import { RequestValidationError } from '../../errors/request-validation';
 import { Comment, Link, Vote } from '../../models';
 import { unfurl } from 'unfurl.js';
 
+import { start as mongoStart } from '../../db/mongo';
+
 
 import jwt from 'jsonwebtoken';
 import { currentUser, requireAuth, validateRequest } from '../../middlewares';
@@ -109,6 +111,9 @@ router.post('/', currentUser, [
 // @desc 
 // @access 
 router.get('/', currentUser, async (req: Request, res: Response) => {
+
+    const client = await mongoStart();
+
     try {
         const body = req.body;
 
@@ -118,26 +123,31 @@ router.get('/', currentUser, async (req: Request, res: Response) => {
         let allComments = [];
 
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
+        
         let aggComments = await Comment.aggregate([
             {
-                $lookup: {
-                    from: "vote",
-                    localField: '_id',
-                    foreignField: 'commentId',
-                    as: "votesTest"
+                $match: {}
+            },
+            {
+                $lookup : {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "userR"
                 }
             },
+
             {
                 $addFields: {
                     currentAuth: "$author",
-                    sentiment: { $add: [1, 3] },
-                    likess: 10
+
                 },
             },
         ]);
 
-        let allVotes = await Vote.find({});
+        
         console.log({ aggComments });
+
         //   console.log({ allVotes });
         return res.status(200).send({ comments: aggComments });
 

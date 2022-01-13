@@ -37,7 +37,6 @@ import { NotFoundError } from './api/errors/404';
 
 const whitelist = [
     'http://localhost:3000',
-    'https://dap-next-jay-bien.vercel.app/',
     'localhost:3000',
     'http://localhost:3000.org'
 ];
