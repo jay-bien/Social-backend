@@ -1,6 +1,8 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '../api/errors';
+require('dotenv').config();
+
 
 let mongo: any;
 beforeAll( async  ( ) => {

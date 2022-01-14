@@ -42,7 +42,6 @@ validateRequest,
 
     const exists = await User.findOne({ email });
     if( exists ){
-        console.log("Email is in use");
         throw new BadRequest( 'Email is already registered.' )
     }
     } catch( e ){
@@ -51,7 +50,6 @@ validateRequest,
     }
 
     try{
-    console.log(" Create user");
     const created = Date.now();
     const username = generateName();
 
@@ -61,6 +59,7 @@ validateRequest,
         id: user.id,
         email: user.email
     }, "" + process.env.JWT_KEY ! );
+
 
     req.session = {
         jwt: uJwt

@@ -1,6 +1,5 @@
-import e, { Request, Response, NextFunction} from 'express';
+import e, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
 
 
 /*
@@ -20,29 +19,28 @@ declare global {
     }
 }
 
-export const currentUser = async ( req: Request, res: Response, next: NextFunction ) => {
-
-
+export const currentUser = async (req: Request, res: Response, next: NextFunction) => {
 
     const cookieHeaders = req.headers.cookie;
     let token = req.session?.jwt;
 
+    const jwtKey = "" + process.env.JWT_KEY;
+    if (token) {
+        try {
 
-        const jwtKey = process.env.JWT_KEY!;
-        if( token ){
-            try{
-            
-                const payload =  jwt.verify( token, jwtKey) as UserPayload;
-                req.currentUser = payload;
-            } catch( e ){
-                // todo
-                console.log({ e });
-                req.currentUser = null;
-                console.log("Bad compare")
-            }
+            const payload = jwt.verify(token, jwtKey) as UserPayload;
+            req.currentUser = payload;
+            console.warn({ payload });
 
+        } catch (e) {
+            // todo
+            console.log({ e });
+            req.currentUser = null;
+            console.log("Bad compare")
         }
-    
+
+    }
+
 
 
 

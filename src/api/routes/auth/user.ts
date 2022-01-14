@@ -36,18 +36,15 @@ router.get('/', currentUser, requireAuth, async ( req: Request, res: Response ) 
     }
     
 
-    return res.status( 200 ).send( { userO }  );
+    return res.status( 200 ).send( userO  );
 
 });
 
 router.post('/', currentUser, requireAuth, async ( req: Request, res: Response ) => {
 
-
     const currU = req.currentUser;
     const body = req.body;
-    console.log({ body });
-
-    return res.status( 202 ).send( { user : currU } );
+    return res.status( 202 ).send(  currU  );
 
 })
 

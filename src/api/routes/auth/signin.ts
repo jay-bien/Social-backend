@@ -50,14 +50,6 @@ router.post('/', [
         jwt: uJwt
     };
 
-
-    console.log("Session jwt from signing in.");
-    console.log( req.session.jwt );
-
-
-
-
-
     return res.status( 200 ).send( { 
         user
     });

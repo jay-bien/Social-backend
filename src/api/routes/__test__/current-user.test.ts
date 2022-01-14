@@ -9,9 +9,19 @@ it( 'Returns a 400 error if no cookie.',  async ( ) => {
     //  args: ( email, password, expectedStatusCode )
     // rets: cookie 
 
-    const cookie = await createUserGetCookie( email, password, 201 );
-    const user = await getCurrentUser( 400 );
+    const cookie = await createUserGetCookie( email, password, password, 201 );
+    const user = await getCurrentUser( 401 );
+    return;
 
+})
+it( 'Returns a 400 error if bad cookie.',  async ( ) => {
+
+    // func: createUserGetCookie( ) from utils
+    //  args: ( email, password, expectedStatusCode )
+    // rets: cookie 
+
+    const cookie = await createUserGetCookie( email, password, password, 201 );
+    const user = await getCurrentUser( 401, ["express://badcookie"] );
     return;
 
 })
@@ -22,14 +32,14 @@ it( 'Returns a 200 and matching user if valid cookie.',  async ( ) => {
     //  args: ( email, password, expectedStatusCode )
     // rets: cookie 
 
-    const cookie = await createUserGetCookie( email, password, 201 );
+    const cookie = await createUserGetCookie( email, password, password, 201 );
 
     // func: getCurrentUser( ) from utils
     //  args: ( statusCode, cookie = null )
     // rets: { user{ ... } } || {user : null  }
-    const res = await getCurrentUser( 200, cookie );
+    const user = await getCurrentUser( 200, cookie );
     
-    expect( res.user?.email ).toBe( email );
+    expect( user.email ).toBe( email );
 
     return;
 

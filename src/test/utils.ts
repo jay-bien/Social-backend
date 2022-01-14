@@ -33,13 +33,12 @@ export const signInGetCookie = async ( email: string, password: string, expectCo
 
 interface User {
     id: string
-    email: string
-}
-interface UserRes {
-    user : User | null
+    email: string,
+    username: string
 }
 
-export const getCurrentUser = async ( expectCode: number, cookie? : string[] ) : Promise< UserRes > => {
+
+export const getCurrentUser = async ( expectCode: number, cookie? : string[] ) : Promise< User > => {
 
     const cook = ( cookie && cookie.length >= 0 ) ? cookie : [];
     const response = await request( app )
