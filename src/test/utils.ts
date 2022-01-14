@@ -2,11 +2,15 @@ import app  from '../app';
 import request from 'supertest';
 import { PATHS } from '../api/constants'
 
-export const createUserGetCookie = async ( email: string, password: string, expectCode: number ): Promise< string[] > => {
+export const createUserGetCookie = async ( email: string, password: string, password2: string, expectCode: number ): Promise< string[] > => {
     const response = await request( app )
         .post( PATHS.signup )
-        .send( { email, password } )
-        .expect( expectCode )
+        .send( { email, password, password2 } )
+        
+        console.log({ password }, { email });
+        console.log( response.text );
+        expect( response.status ).toBe( expectCode );
+
         const cookie = response.get('Set-Cookie');
         
         return cookie;
