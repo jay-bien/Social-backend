@@ -6,45 +6,13 @@ import { PATHS } from '../../constants';
 import { email, password  } from './constants';
 
 
-it("Has a post route handler listening.", async ( ) => {
 
-
-    const response = await request( app )
-        .post(PATHS.votes)
-        .send({})
-        
-
-        expect( response.status ).not.toBe( 404 );
-
-
-
-
-
-});
-
-it("Has a get route handler listening.", async ( ) => {
-
-
-    const response = await request( app )
-    .get( PATHS.votes )
-    .send({ })
-
-    expect( response.status ).not.toBe( 404 );
-
-
-
-
-});
-
-it('Returns an unauthorized error if user tries to post  not logged in', async () => {
-
+it('Returns an unauthorized error if user tries to vote  without being logged in.', async () => {
     const response = await request( app )
     .post( PATHS.votes )
     .send({ 
 
     })
-
-
     expect( response.status ).toBe( 401 )
 
 })
