@@ -6,9 +6,6 @@ import { RequestValidationError } from '../../errors/request-validation';
 import { Comment, Link, Vote } from '../../models';
 import { unfurl } from 'unfurl.js';
 
-import mongoose from 'mongoose';
-
-import jwt from 'jsonwebtoken';
 import { currentUser, requireAuth, validateRequest } from '../../middlewares';
 
 const router = express.Router();
@@ -29,7 +26,7 @@ router.delete('/',
     });
 
 
-router.post('/', currentUser, [
+router.post('/', currentUser, requireAuth, [
 
     body('title').
         trim()
@@ -37,7 +34,12 @@ router.post('/', currentUser, [
         .isEmpty()
         .withMessage('title is invalid'),
     body('content')
+        .trim(),
+    body('type')
         .trim()
+        .not()
+        .isEmpty()
+        .withMessage("Must specify post type.")
 ],
     validateRequest,
     async (req: Request, res: Response) => {
@@ -68,8 +70,8 @@ router.post('/', currentUser, [
             }
 
 
-        } else if (type === "qa") {
-
+        } else {
+            throw new BadRequest("Please specify valid type")
         }
 
 
@@ -91,7 +93,7 @@ router.post('/', currentUser, [
             });
 
             await commentDoc.save();
-            return res.status(200).send({ data: commentDoc });
+            return res.status(201).send({ data: commentDoc });
 
         } catch (e) {
             console.log({ e });
@@ -120,13 +122,13 @@ router.get('/', currentUser, async (req: Request, res: Response) => {
         let allComments = [];
 
         allComments = await Comment.find({}).populate('link').sort({ "created_at": -1 });
-        
+
         let aggComments = await Comment.aggregate([
             {
                 $match: {}
             },
             {
-                $lookup : {
+                $lookup: {
                     from: "users",
                     localField: "author",
                     foreignField: "_id",
@@ -142,7 +144,7 @@ router.get('/', currentUser, async (req: Request, res: Response) => {
             },
         ]);
 
-        
+
         console.log({ aggComments });
 
         //   console.log({ allVotes });

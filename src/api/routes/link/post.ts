@@ -25,7 +25,7 @@ router.post('/', async ( req: Request, res: Response) => {
       });
     } catch( e ){
   
-      console.log({ e });
+       console.log({ e });
         return res.status( 404 ).send({
             data: null
   });

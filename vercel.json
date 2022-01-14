@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "dap-wiki-node",
+  "name": "social",
   "builds": [
     { "src": "index.ts", "use": "@vercel/node" }
   ],
