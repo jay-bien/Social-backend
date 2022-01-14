@@ -8,12 +8,12 @@ it( 'Returns a 200 and deletes session.',  async ( ) => {
     // func: createUserGetCookie( ) from utils
     //  args: ( email, password, expectedStatusCode )
     // rets: cookie 
-    const cookie = await createUserGetCookie( email, password, 201 );
+    const cookie = await createUserGetCookie( email, password, password, 201 );
 
 
     // func: getCurrentUser( ) from utils
     //  args: ( statusCode, cookie = null )
-    // rets: { user{ ... } } || {user : null  }
+    // rets: user{ ... }  ||  null
     const res = await getCurrentUser( 200, cookie );
 
     // func: signOut( ) from utils

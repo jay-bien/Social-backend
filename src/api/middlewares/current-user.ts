@@ -30,7 +30,6 @@ export const currentUser = async (req: Request, res: Response, next: NextFunctio
 
             const payload = jwt.verify(token, jwtKey) as UserPayload;
             req.currentUser = payload;
-            console.warn({ payload });
 
         } catch (e) {
             // todo
