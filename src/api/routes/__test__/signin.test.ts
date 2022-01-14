@@ -39,19 +39,19 @@ it( 'Returns a 400 error if email is invalid.' , async ( ) => {
 
 
 it( 'Returns a 400 error if email is not found.', async ( ) => {
-    await signInGetCookie( "gobbledygooke@gmail.com", password, 400 );
+    await signInGetCookie( email + ".", password, 400 );
 })
 
-it( 'Returns a 200 and sets a cookie email and password are valid.',  async ( ) => {
-    const cookie = await createUserGetCookie( email, password, 201 );
+it( 'Returns a 200 if email and password are valid.',  async ( ) => {
+    const cookie = await createUserGetCookie( email, password, password, 201 );
     await signInGetCookie( email, password, 200 );
 });
 
 
 it( 'Sets a cookie on successful signin.',  async ( ) => {
-    const cookie = await createUserGetCookie( email, password, 201 );
-    const cookie1 = await signInGetCookie( email, password, 200 );
-    expect( Array.isArray( cookie1 ) ).toBe( true );
-    expect( cookie1.length ).toBeGreaterThan( 0 );
+    const signupCookie = await createUserGetCookie( email, password, password, 201 );
+    const signinCookie = await signInGetCookie( email, password, 200 );
+    expect( Array.isArray( signinCookie ) ).toBe( true );
+    expect( signinCookie.length ).toBeGreaterThan( 0 );
 
 })

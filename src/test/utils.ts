@@ -7,10 +7,7 @@ export const createUserGetCookie = async ( email: string, password: string, pass
         .post( PATHS.signup )
         .send( { email, password, password2 } )
         
-        console.log({ password }, { email });
-        console.log( response.text );
         expect( response.status ).toBe( expectCode );
-
         const cookie = response.get('Set-Cookie');
         
         return cookie;
@@ -19,7 +16,6 @@ export const createUserGetCookie = async ( email: string, password: string, pass
 
 export const signInGetCookie = async ( email: string, password: string, expectCode: number ) : Promise< string[] > => {;
 
-    console.log({ email, password });
     const response = await request( app )
     .post( PATHS.signin )
     .send(
@@ -28,10 +24,8 @@ export const signInGetCookie = async ( email: string, password: string, expectCo
             password
         }
     )
-    
-    console.log( response.text );
-    expect( response.statusCode ).toBe( 201 );
 
+    expect( response.statusCode ).toBe( expectCode );
     const cookie = response.get('Set-Cookie');
     return cookie;
 }
