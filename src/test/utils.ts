@@ -13,7 +13,9 @@ export const createUserGetCookie = async ( email: string, password: string, expe
 }
 
 
-export const signInGetCookie = async ( email: string, password: string, expectCode: number ) : Promise< string[] > => {
+export const signInGetCookie = async ( email: string, password: string, expectCode: number ) : Promise< string[] > => {;
+
+    console.log({ email, password });
     const response = await request( app )
     .post( PATHS.signin )
     .send(
@@ -22,7 +24,9 @@ export const signInGetCookie = async ( email: string, password: string, expectCo
             password
         }
     )
-    .expect( expectCode );
+    
+    console.log( response.text );
+    expect( response.statusCode ).toBe( 201 );
 
     const cookie = response.get('Set-Cookie');
     return cookie;
