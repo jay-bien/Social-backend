@@ -23,8 +23,6 @@ router.get('/', [
     currentUser, requireAuth
 ], async( req: Request, res:Response ) => {
 
-    console.log( req.currentUser );
-
     try{
         const id = req.currentUser.id;
         // const userVotes = await Vote.find({ author: id});

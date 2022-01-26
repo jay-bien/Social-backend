@@ -63,32 +63,29 @@ export const signOut = async (expectCode: number): Promise<string[]> => {
 
 
 interface CreatePostOptions {
-    expectCode?: 201,
-    email?: "test@gmail.com",
-    password?: "password20"
-    
+    expectCode: number,
+    cookie: string[]
 }
 
 interface PostInformation {
     title: string,
+    type: string,
     content?: string,
-    link?: string
+    link?: string,
 }
 
-export const createPost = async ( post: PostInformation, options : CreatePostOptions) : Promise<{ id: string, title: string }> => {
+export const createPost = async (post: PostInformation, options: CreatePostOptions): Promise<{ id: string, title: string }> => {
 
+    const { cookie, expectCode } = options;
 
-    console.log({ options });
+    const response = await request(app)
+        .post(PATHS.posts)
+        .set("Cookie", cookie)
+        .send(
+            post
+        );
 
-    // const cookie = await createUserGetCookie(email, password, password, 201)
-    // const response = await request(app)
-    //     .post(PATHS.signup)
-    //     .set("Cookie", cookie)
-    //     .send(
-    //         postInformation
-    //     )
-
-    // return response.body.data
+    return response.body.data
     return null
 
 }

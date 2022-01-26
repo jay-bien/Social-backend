@@ -1,7 +1,7 @@
 import { sign } from 'jsonwebtoken';
 import request from 'supertest';
 import app from '../../../app';
-import { createUserGetCookie, signInGetCookie } from '../../../test/utils';
+import { createUserGetCookie, signInGetCookie, createPost } from '../../../test/utils';
 import { PATHS } from '../../constants';
 import { email, password } from './constants';
 
@@ -45,7 +45,6 @@ it("Returns a bad request error if post is missing title", async () => {
     const cookie = await createUserGetCookie(email, password, password, 201);
     const noTitle = { ...testPost };
     delete noTitle.title;
-    console.log({ noTitle });
 
     const response = await request(app)
         .post(PATHS.posts)
