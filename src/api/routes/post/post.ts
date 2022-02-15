@@ -20,7 +20,6 @@ router.delete('/',
     async (req: Request, res: Response) => {
 
         await Comment.deleteMany({});
-
         const comments = await Comment.find({});
         return res.status(200).send({ comments })
     });

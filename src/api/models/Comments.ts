@@ -10,14 +10,16 @@ interface CommentAttrs {
     parentId: string,
     rootId: string,
     link: string | null,
-    likes: number,
-    dislikes: number,
     categories: string[],
     tags: string[],
     type: string,
     created_at: number
 }
 
+interface VoteProperty  {
+    direction: 'up' | 'down',
+    author: ObjectID
+}
 
 interface CommentDoc extends mongoose.Document{
     title: string,
@@ -27,8 +29,7 @@ interface CommentDoc extends mongoose.Document{
     rootId: string,
     createdAt: Date,
     link: string | null,
-    likes: number,
-    dislikes: number,
+    votes: VoteProperty[],
     categories: string[],
     tags: string[],
     type: string,
@@ -67,13 +68,8 @@ const commentSchema = new mongoose.Schema({
         required: false,
         ref: "Link"
     },
-    likes: {
-        type: Number,
-        required: false,
-    },
-    dislikes: {
-        type: Number,
-        required: false
+    votes: {
+
     },
     categories: {
         type: Array,
