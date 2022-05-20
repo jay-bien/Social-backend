@@ -1,26 +1,17 @@
 import express, { Request, Response } from 'express';
-
+import { Auth } from '../../controllers';
 const router = express.Router();
 
 
 // @route POST 
 // @desc sign out a user
 // @access public
-router.post('/', ( req: Request, res: Response ) => {
-
-    req.session = null;
-    res.status( 200 ).send({})
-    return;
-})
+router.post('/', Auth.signout );
 
 
 // @route GET
 // @desc Sign out a user
 // @access public
-router.get('/', ( req: Request, res: Response ) => {
-    req.session = null;
-    res.status( 200 ).send({})
-    return;
-})
+router.get('/', Auth.signout );
 
 export default router;

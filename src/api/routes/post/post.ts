@@ -83,8 +83,6 @@ router.post('/', currentUser, requireAuth, [
                 author: userId,
                 parentId: "",
                 rootId: "",
-                likes: 0,
-                dislikes: 0,
                 categories,
                 tags,
                 type,
@@ -144,10 +142,10 @@ router.get('/', currentUser, async (req: Request, res: Response) => {
         ]);
 
 
-        console.log({ aggComments });
+        console.log({ allComments });
 
         //   console.log({ allVotes });
-        return res.status(200).send({ comments: aggComments });
+        return res.status(200).send(allComments);
 
 
 

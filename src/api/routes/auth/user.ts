@@ -1,8 +1,8 @@
 import express, { Request, response, Response } from 'express';
-import jwt from 'jsonwebtoken';
 
 import { currentUser, requireAuth }  from '../../middlewares';
 import { Comment, Vote } from '../../models';
+import { Auth } from '../../controllers';
 
 const router = express.Router();
 
@@ -12,33 +12,7 @@ const router = express.Router();
 // @route /auth/currentUser
 // @desc get current logged in user info from jwt
 // @access private 
-router.get('/', currentUser, requireAuth, async ( req: Request, res: Response ) => {
-
-
-    let currU = req.currentUser;
-
-    const upVotes = await Vote.countDocuments({
-        author: currU.id,
-        direction: "up"
-    });
-    const downVotes = await Vote.countDocuments({
-        author: currU.id,
-        direction: "down"
-    });
-    const posts = await Comment.countDocuments({
-        author: currU.id
-    })
-    const userO = {
-        ...currU,
-        upVotes,
-        downVotes,
-        posts
-    }
-    
-
-    return res.status( 200 ).send( userO  );
-
-});
+router.get('/', currentUser, requireAuth, Auth.currentUser );
 
 router.post('/', currentUser, requireAuth, async ( req: Request, res: Response ) => {
 

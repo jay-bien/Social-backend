@@ -1,12 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { BadRequest, DatabaseConnectionError } from '../../errors';
-import { validateRequest } from '../../middlewares';
-import { User } from '../../models';
-import { Password } from '../../services/password';
-import jwt from 'jsonwebtoken';
+
 
 const router = express.Router();
+
+import { Auth } from '../../controllers';
 
 
 // @route POST 
@@ -22,39 +20,7 @@ router.post('/', [
         .trim()
         .notEmpty()
         .withMessage( "Password cannot be empty." )
-], validateRequest, async ( req: Request, res: Response ) => {
-
-    const { email, password } = req.body;
-
-    let user: any;
-    try{
-        user = await User.findOne({ email });
-    } catch( e ){
-        throw new DatabaseConnectionError( 'Please try again later.' ); 
-    }
-    if( ! user ) {
-        throw new BadRequest( 'Cannot find this user.' )
-    }
-
-    const isMatch = await Password.compare( password, user.password );
-    if( ! isMatch ){
-        throw new BadRequest( 'Invalid credentials.' )
-    }
-
-    const uJwt = jwt.sign({
-        id: user.id,
-        email: user.email
-    }, "" + process.env.JWT_KEY ! );
-
-    req.session = {
-        jwt: uJwt
-    };
-
-    return res.status( 200 ).send( { 
-        user
-    });
-        
-})
+], Auth.signin )
 
 
 // @route 
