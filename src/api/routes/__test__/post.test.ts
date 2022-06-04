@@ -28,7 +28,7 @@ it("Has a route handler listening.", async () => {
 
 
 
-it('Returns an unauthorized error if user is not logged in.', async () => {
+it('Returns an unauthorized error if user is not logged in when posting.', async () => {
     const response = await request(app)
         .post(PATHS.posts)
         .send({
@@ -54,6 +54,7 @@ it("Returns a bad request error if post is missing title", async () => {
         })
     expect(response.status).toBe(400)
 })
+
 it("Returns a bad request error if post is missing type", async () => {
 
     const cookie = await createUserGetCookie(email, password, password, 201);
@@ -66,20 +67,6 @@ it("Returns a bad request error if post is missing type", async () => {
         .send( noType )
     expect(response.status).toBe(400)
 })
-
-it("Returns a bad request error if post has bad type", async () => {
-
-    const cookie = await createUserGetCookie(email, password, password, 201);
-    const badType = { ...testPost };
-    badType.type = "nonsense"
-
-    const response = await request(app)
-        .post(PATHS.posts)
-        .set('Cookie', cookie)
-        .send( badType )
-    expect(response.status).toBe(400)
-})
-
 
 
 
@@ -113,5 +100,52 @@ it("Returns a 200 and created link post on success.", async () => {
         expect( createdPost.link ).toBeDefined()
         expect( createdPost.link.length ).toBeGreaterThan( 1 );
        
+});
+
+
+it("Returns a valid post if post exists", async () => {
+    const cookie = await createUserGetCookie( email, password, password );
+    const response = await request( app )
+        .post( PATHS.posts )
+        .set('Cookie', cookie)
+        .send( testPost )
+
 })
 
+it("Route handler exists for put route", async () => {
+
+    const cookie = await createUserGetCookie( email, password, password );
+    const response = await request( app )
+        .put( PATHS.posts + '/id' )
+        .set('Cookie', cookie)
+        .send({})
+
+        expect( response.status ).not.toBe( 404 );
+})
+it("Returns a 200 and modifies existing post when sent a valid put request.", async ( ) => {
+    const cookie = await createUserGetCookie( email, password, password );
+    const response = await request( app )
+        .post(PATHS.posts )
+        .set('Cookie', cookie )
+        .send( testPost )
+
+        expect( response.status ).toBe( 201 );
+
+
+    console.warn("Run put test");
+    console.warn(response.body);
+    const id = response.body.data.id;
+
+    console.warn({ id });
+    const newTitle = "test title edited " + Math.floor( Math.random() * 9999999 );
+    const putResponse = await request( app )
+        .put(PATHS.posts + `/${id}`)
+        .set('Cookie', cookie)
+        .send({ title: newTitle })
+    
+
+
+        expect( putResponse.status ).toBe( 200 );
+        expect( putResponse.body.title ).toBe( newTitle );
+
+})
