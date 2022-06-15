@@ -1,5 +1,5 @@
-import  { email, password } from './constants';
-import { createUserGetCookie } from '../../../test/utils';
+import  { email, password } from '../constants';
+import { createUserGetCookie } from '../../../../test/utils';
 
 
 
@@ -59,10 +59,3 @@ it( "Creates user and returns 201 with valid email & password.", async ( ) => {
     await createUserGetCookie( email, password, password, 201 );
     return; 
 })
-
-
-
-
-
-
-

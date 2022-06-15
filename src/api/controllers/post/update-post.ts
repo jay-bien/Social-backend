@@ -19,13 +19,11 @@ export const updatePost = async ( req: Request, res: Response ) => {
             _id: postId,
             author: userId
         });
-        console.warn({ post });
     
         if(!post) throw new BadRequest("We cannot process this request.");
         post.title = title || post.title;
         post.content = content || post.content;
         await post.save();
-        console.log("Updated post");
         return res.status( 200 ).send( post );
     } catch( e ){
         throw new DatabaseConnectionError("Cannot complete this action right now");

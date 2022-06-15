@@ -15,7 +15,7 @@ export const createUserGetCookie = async (email: string, password: string, passw
 
 
 export const signInGetCookie = async (email: string, password: string, expectCode: number): Promise<string[]> => {
-    ;
+;
 
     const response = await request(app)
         .post(PATHS.signin)

@@ -1,5 +1,5 @@
-import  { email, password } from './constants';
-import { createUserGetCookie, getCurrentUser, signOut } from '../../../test/utils';
+import  { email, password } from '../constants';
+import { createUserGetCookie, getCurrentUser, signOut } from '../../../../test/utils';
 
 
 

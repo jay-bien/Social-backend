@@ -1,21 +1,13 @@
-import { sign } from 'jsonwebtoken';
+
+
 import request from 'supertest';
-import app from '../../../app';
-import { createUserGetCookie, signInGetCookie, createPost } from '../../../test/utils';
-import { PATHS } from '../../constants';
-import { email, password } from './constants';
+import app from '../../../../app';
+import { createUserGetCookie, signInGetCookie, createPost } from '../../../../test/utils';
+import { PATHS } from '../../../constants';
+import { email, password } from '../constants';
 
+import { testPost } from './data';
 
-const testPost = {
-    title: "Test title",
-    link: "https://google.com",
-    content: "Optional content goes here",
-    author: "",
-    categories: ["Business"],
-    tags: [""],
-    type: "text",
-    created_at: Date.now(),
-}
 
 
 it("Has a route handler listening.", async () => {
@@ -25,6 +17,8 @@ it("Has a route handler listening.", async () => {
         .send({})
     expect(response.status).not.toBe(404);
 });
+
+
 
 
 
@@ -70,7 +64,7 @@ it("Returns a bad request error if post is missing type", async () => {
 
 
 
-it("Returns a 200 and created text post on success.", async () => {
+it("Successfully creates text post.", async () => {
     const cookie = await createUserGetCookie(email, password, password, 201);
     const response = await request(app)
         .post(PATHS.posts)
@@ -84,7 +78,7 @@ it("Returns a 200 and created text post on success.", async () => {
         expect( createdPost.content ).toBe( testPost.content );
        
 })
-it("Returns a 200 and created link post on success.", async () => {
+it("Successfully creates link post.", async () => {
     const cookie = await createUserGetCookie(email, password, password, 201);
     
     testPost.type = "link";
@@ -102,50 +96,3 @@ it("Returns a 200 and created link post on success.", async () => {
        
 });
 
-
-it("Returns a valid post if post exists", async () => {
-    const cookie = await createUserGetCookie( email, password, password );
-    const response = await request( app )
-        .post( PATHS.posts )
-        .set('Cookie', cookie)
-        .send( testPost )
-
-})
-
-it("Route handler exists for put route", async () => {
-
-    const cookie = await createUserGetCookie( email, password, password );
-    const response = await request( app )
-        .put( PATHS.posts + '/id' )
-        .set('Cookie', cookie)
-        .send({})
-
-        expect( response.status ).not.toBe( 404 );
-})
-it("Returns a 200 and modifies existing post when sent a valid put request.", async ( ) => {
-    const cookie = await createUserGetCookie( email, password, password );
-    const response = await request( app )
-        .post(PATHS.posts )
-        .set('Cookie', cookie )
-        .send( testPost )
-
-        expect( response.status ).toBe( 201 );
-
-
-    console.warn("Run put test");
-    console.warn(response.body);
-    const id = response.body.data.id;
-
-    console.warn({ id });
-    const newTitle = "test title edited " + Math.floor( Math.random() * 9999999 );
-    const putResponse = await request( app )
-        .put(PATHS.posts + `/${id}`)
-        .set('Cookie', cookie)
-        .send({ title: newTitle })
-    
-
-
-        expect( putResponse.status ).toBe( 200 );
-        expect( putResponse.body.title ).toBe( newTitle );
-
-})
