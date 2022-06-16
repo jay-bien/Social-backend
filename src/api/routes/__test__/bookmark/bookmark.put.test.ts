@@ -27,6 +27,18 @@ it('Returns an unauthorized error if user is not logged in.', async () => {
 
 })
 
+it("Returns a not found error if post id is malformatted.", async () => {
+
+    const cookie = await createUserGetCookie( email, password, password, 201 );
+    const response = await request( app )
+        .post( `${PATHS.bookmark}/a` )
+        .set("Cookie", cookie)
+        .send(
+            {}
+        )
+        expect( response.status ).toBe( 404 );
+});
+
 
 
 it("Returns a not found error if post id is invalid.", async ( ) => {
@@ -41,17 +53,7 @@ it("Returns a not found error if post id is invalid.", async ( ) => {
     expect( response.status ).toBe( 400 )
 })
 
-it("Returns a not found error if post id is malformatted.", async () => {
 
-    const cookie = await createUserGetCookie( email, password, password, 201 );
-    const response = await request( app )
-        .post( `${PATHS.bookmark}/a` )
-        .set("Cookie", cookie)
-        .send(
-            {}
-        )
-        expect( response.status ).toBe( 404 );
-});
 
 
 it( "Successfully updates bookmark.", async ( ) => {
@@ -61,8 +63,24 @@ it( "Successfully updates bookmark.", async ( ) => {
         expectCode: 201
     });
 
-    console.warn({ post });
+    const commentId: string = post.id   ;
+    const response = await request( app )
+        .post( `${ PATHS.bookmark }/${ commentId }` )
+        .set('Cookie', cookie)
+        .send({ })
 
+        let bookmark = response.body.data;
+        expect( response.status ).toBe( 201 );
+        expect( Object.keys( bookmark ).length ).toBeGreaterThan( 0 );
+
+    //
+    const response2 = await request( app )
+        .post( `${ PATHS.bookmark }/${ commentId }` )
+        .set('Cookie', cookie)
+        .send({ })
+    
+    let noBookmark = response2.body.data;
+    expect( Object.keys( noBookmark ).length ).toBe( 0 );
 })
 
 
