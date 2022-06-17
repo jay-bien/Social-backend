@@ -140,6 +140,19 @@ To install and run the program locally:
     JWT_KEY=rkjfdasbj
     ORIGIN=http://localhost:3000
     ```
+6. Start the app in development mode by running test command. Jest will run the test files and watch the directory for file changes to continuously run tests.
+  ```sh
+  npm run test
+  ```
+7. Start the app in development mode (without jest and testing) by using the dev command.
+```sh
+npm run dev
+```
+8. Start the app in production mode by building the app then starting it.
+  ```sh
+  npm run build
+  npm run start
+  ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -159,10 +172,10 @@ This app can be used in conjunction with the [front end app](https://github.com/
 - [x] Add ability to post text
 - [x] Add ability to post links
 - [x] Add ability to retrieve metadata from posted links
-- [x] Add ability to bookmark post
-- [x] Add ability to upvote and downvote posts
-- [x] Add ability to Comment on posts
-- [x] Add ability to view user activity
+- [ ] Add ability to bookmark post
+- [ ] Add ability to upvote and downvote posts
+- [ ] Add ability to Comment on posts
+- [ ] Add ability to view user activity
 - [ ] Add ability to edit user profile
 - [ ] Add ability to upload profile image
 - [ ] Add ability to search text posts
