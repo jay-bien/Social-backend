@@ -13,24 +13,12 @@ import { testPost } from './data';
 it("Has a route handler listening.", async () => {
 
     const response = await request(app)
-        .put(PATHS.posts + '/a')
+        .put(PATHS.posts + '/id')
         .send({})
         expect(response.status).not.toBe( 404 );
 
 });
 
-
-
-
-it("Route handler exists for put route", async () => {
-    const cookie = await createUserGetCookie( email, password, password );
-    const response = await request( app )
-        .put( PATHS.posts + '/id' )
-        .set('Cookie', cookie)
-        .send({})
-
-        expect( response.status ).not.toBe( 404 );
-})
 
 it("Returns an unauthorized error if user is not logged in", async () => {
 
@@ -40,7 +28,10 @@ it("Returns an unauthorized error if user is not logged in", async () => {
         .set('Cookie', cookie )
         .send( testPost )
     expect( response.status ).toBe( 201 );
-    const id = response.body.data.id;
+
+    const id = response.body.data?.id;
+    expect( id ).toBeDefined();
+
     const newTitle = "test title edited " + Math.floor( Math.random() * 9999999 );
     const badCookie = "invalidcookie";
     const putResponse = await request( app )
@@ -60,7 +51,8 @@ it("Returns a 200 and modified post if valid request.", async ( ) => {
         expect( response.status ).toBe( 201 );
 
 
-    const id = response.body.data.id;
+    const id = response.body.data?.id;
+    expect( id ).toBeDefined();
 
     const newTitle = "test title edited " + Math.floor( Math.random() * 9999999 );
     const putResponse = await request( app )
@@ -69,7 +61,7 @@ it("Returns a 200 and modified post if valid request.", async ( ) => {
         .send({ title: newTitle })
 
         expect( putResponse.status ).toBe( 200 );
-        expect( putResponse.body.title ).toBe( newTitle );
-        expect( putResponse.body.id ).toBe( id );
+        expect( putResponse.body.data?.title ).toBe( newTitle );
+        expect( putResponse.body.data?.id ).toBe( id );
 
 })
