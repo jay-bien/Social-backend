@@ -40,11 +40,13 @@ it( 'Returns a 400 error if email is invalid.' , async ( ) => {
 
 it( 'Returns a 400 error if email is not found.', async ( ) => {
     await signInGetCookie( email + ".", password, 400 );
+    return;
 })
 
 it( 'Returns a 200 if email and password are valid.',  async ( ) => {
     const cookie = await createUserGetCookie( email, password, password, 201 );
     await signInGetCookie( email, password, 200 );
+    return;
 });
 
 
@@ -53,5 +55,6 @@ it( 'Sets a cookie on successful signin.',  async ( ) => {
     const signinCookie = await signInGetCookie( email, password, 200 );
     expect( Array.isArray( signinCookie ) ).toBe( true );
     expect( signinCookie.length ).toBeGreaterThan( 0 );
+    return;
 
 })

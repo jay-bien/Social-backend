@@ -74,7 +74,7 @@ interface PostInformation {
     link?: string,
 }
 
-export const createPost = async (post: PostInformation, options: CreatePostOptions): Promise<{ id: string, title: string }> => {
+export const createPost = async (post: PostInformation, options: CreatePostOptions): Promise<{ id: string, title: string, likes: [], dislikes: [] }> => {
 
     const { cookie, expectCode } = options;
 
