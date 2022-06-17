@@ -37,8 +37,17 @@ it("Returns a valid post if post exists", async () => {
     // expect( 1 ).toBe( false );
 
     expect( fetchedPost.id ).toBe( id );
+})
 
+it("Returns all available posts.", async ( )=>{
 
+    const response = await request( app )
+        .get(PATHS.posts)
+        .send({})
 
+    const fetchedPosts = response.body;
+
+    expect( response.status ).toBe( 200 );
+    expect( Array.isArray( fetchedPosts ) ).toBe( true )
 })
 
