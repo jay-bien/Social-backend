@@ -48,7 +48,7 @@ export const getCurrentUser = async (expectCode: number, cookie?: string[]): Pro
         .send({})
         .expect(expectCode);
 
-    return response.body;
+    return response.body.data;
 }
 
 export const signOut = async (expectCode: number): Promise<string[]> => {
@@ -86,6 +86,4 @@ export const createPost = async (post: PostInformation, options: CreatePostOptio
         );
 
     return response.body.data
-    return null
-
 }

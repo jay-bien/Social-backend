@@ -3,7 +3,7 @@ import { createUserGetCookie, getCurrentUser } from '../../../../test/utils';
 
 
 
-it( 'Returns a 400 error if no cookie.',  async ( ) => {
+it( 'Returns an unauthorized error if no cookie.',  async ( ) => {
 
     // func: createUserGetCookie( ) from utils
     //  args: ( email, password, expectedStatusCode )
@@ -14,7 +14,7 @@ it( 'Returns a 400 error if no cookie.',  async ( ) => {
     return;
 
 })
-it( 'Returns a 400 error if bad cookie.',  async ( ) => {
+it( 'Returns an unauthorized error if bad cookie.',  async ( ) => {
 
     // func: createUserGetCookie( ) from utils
     //  args: ( email, password, expectedStatusCode )

@@ -8,7 +8,6 @@ import { email, password  } from '../constants';
 
 
 it("Has a route handler listening.", async ( ) => {
-
     const response = await request( app )
         .post(PATHS.bookmark)
         .send({})
@@ -32,7 +31,7 @@ it('Returns an unauthorized error if user is not logged in.', async () => {
 it("Returns a bad request error if comment id is not included.", async ( ) => {
     const cookie = await createUserGetCookie( email, password, password, 201 );
     const response = await request( app )
-    .post( PATHS.bookmark )
+    .post( `${PATHS.bookmark}/`)
     .set('Cookie', cookie)
     .send({ 
 
@@ -41,7 +40,7 @@ it("Returns a bad request error if comment id is not included.", async ( ) => {
     expect( response.status ).toBe( 400 )
 })
 
-it("Returns a not found error if post id is malformatted.", async () => {
+it("Returns a bad request error if post id is malformatted.", async () => {
 
     const cookie = await createUserGetCookie( email, password, password, 201 );
     const response = await request( app )
@@ -50,7 +49,7 @@ it("Returns a not found error if post id is malformatted.", async () => {
         .send(
             {}
         )
-        expect( response.status ).toBe( 404 );
+        expect( response.status ).toBe( 400 );
 });
 
 
@@ -66,8 +65,6 @@ it( "Creates a bookmark document and returns it.", async ( ) => {
         .post( `${ PATHS.bookmark }/${ commentId }` )
         .set('Cookie', cookie)
         .send({ })
-
-    console.warn( response.body );
     expect( response.status ).toBe( 201 )
 })
 
